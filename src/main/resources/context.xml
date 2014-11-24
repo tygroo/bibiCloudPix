@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+			http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.2.xsd
+			http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+			http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+
+	<context:annotation-config />
+
+	<!-- DATABASE SETUP -->
+
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="username" value="bibi" />
+		<property name="password" value="bibi" />
+		<property name="driverClassName" value="org.postgresql.Driver" />
+		<property name="url"
+			value="jdbc:postgresql://localhost:5432/cloudpix?createDatabaseIfNotExist=true" />
+		<property name="initialSize" value="5" />
+		<property name="minIdle" value="5" />
+		<property name="maxIdle" value="10" />
+		<property name="maxActive" value="20" />
+		<property name="timeBetweenEvictionRunsMillis" value="30000" />
+		<property name="minEvictableIdleTimeMillis" value="60000" />
+		<property name="testOnBorrow" value="true"></property>
+		<!-- <property name="validationQueryTimeout" value="${jdbc.validation.query.timeout}" 
+			/> --> <!-- NOT IMPLEMENTED -->
+		<property name="validationQuery" value="select version()"></property>
+	</bean>
+
+	<bean id="entityManagerFactory"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="persistenceUnitName" value="uaiContactsPU" />
+		<property name="jpaDialect" ref="jpaDialect" />
+
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+				<property name="database" value="POSTGRESQL" />
+				<property name="databasePlatform" value="org.hibernate.dialect.PostgreSQL9Dialect" />
+				<property name="showSql" value="false" />
+			</bean>
+
+		</property>
+	</bean>
+	<bean id="jpaDialect" class="org.springframework.orm.jpa.vendor.HibernateJpaDialect" />
+
+	<!-- Transaction manager configuration, used by AbstractTransactionalSpringContextTests -->
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+		<property name="dataSource" ref="dataSource" />
+		<property name="jpaDialect" ref="jpaDialect" />
+	</bean>
+
+	<bean id="newsEntryDao" class="fr.kisuke.dao.newsentry.JpaNewsEntryDao">
+	</bean>
+
+	<bean id="userDao" class="fr.kisuke.dao.user.JpaUserDao">
+	</bean>
+
+	<bean id="dataBaseInitializer" class="fr.kisuke.dao.DataBaseInitializer"
+		>
+		<constructor-arg ref="userDao" />
+		<constructor-arg ref="newsEntryDao" />
+		<constructor-arg ref="passwordEncoder" />
+	</bean>
+
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	<!-- INIT REST COMPONENTS -->
+
+	<context:component-scan base-package="fr.kisuke.rest.resources" />
+
+	<bean id="objectMapper" class="org.codehaus.jackson.map.ObjectMapper" />
+
+	<!-- SPRING SECURITY SETUP -->
+
+	<bean id="passwordEncoder"
+		class="org.springframework.security.crypto.password.StandardPasswordEncoder">
+		<constructor-arg value="ThisIsASecretSoChangeMe" />
+	</bean>
+
+	<security:authentication-manager id="authenticationManager">
+		<security:authentication-provider
+			user-service-ref="userDao">
+			<security:password-encoder ref="passwordEncoder"></security:password-encoder>
+		</security:authentication-provider>
+	</security:authentication-manager>
+
+	<security:http realm="Protected API" use-expressions="true"
+		auto-config="false" create-session="stateless" entry-point-ref="unauthorizedEntryPoint"
+		authentication-manager-ref="authenticationManager">
+		<security:custom-filter ref="authenticationTokenProcessingFilter"
+			position="FORM_LOGIN_FILTER" />
+		<security:intercept-url pattern="/rest/user/authenticate"
+			access="permitAll" />
+		<security:intercept-url method="GET" pattern="/rest/news/**"
+			access="hasRole('user')" />
+		<security:intercept-url method="PUT" pattern="/rest/news/**"
+			access="hasRole('admin')" />
+		<security:intercept-url method="POST" pattern="/rest/news/**"
+			access="hasRole('admin')" />
+		<security:intercept-url method="DELETE"
+			pattern="/rest/news/**" access="hasRole('admin')" />
+	</security:http>
+
+	<bean id="unauthorizedEntryPoint" class="fr.kisuke.rest.UnauthorizedEntryPoint" />
+
+	<bean class="fr.kisuke.rest.AuthenticationTokenProcessingFilter"
+		id="authenticationTokenProcessingFilter">
+		<constructor-arg ref="userDao" />
+	</bean>
+
+</beans>
