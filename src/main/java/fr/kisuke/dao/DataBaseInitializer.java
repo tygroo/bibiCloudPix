@@ -40,11 +40,11 @@ public class DataBaseInitializer
 
 	public void initDataBase()
 	{
-		Users userUser = new Users("user2", this.passwordEncoder.encode("user"));
+		Users userUser = new Users("user", this.passwordEncoder.encode("user"));
 		userUser.addRole("user");
 		this.userDao.save(userUser);
 
-		Users adminUser = new Users("admin2", this.passwordEncoder.encode("admin"));
+		Users adminUser = new Users("admin", this.passwordEncoder.encode("admin"));
 		adminUser.addRole("user");
 		adminUser.addRole("admin");
 		this.userDao.save(adminUser);

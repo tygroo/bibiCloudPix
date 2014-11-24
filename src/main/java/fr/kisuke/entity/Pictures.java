@@ -1,16 +1,9 @@
 package fr.kisuke.entity;
 
-import java.io.Serializable;
-
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-
 import org.joda.time.DateTime;
+
+import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * @author bbonheur
@@ -18,7 +11,7 @@ import org.joda.time.DateTime;
  */
 
 @javax.persistence.Entity
-public class Pictures implements Serializable {
+public class Pictures implements Serializable, Entity {
 	
 	/**
 	 * 

@@ -4,11 +4,14 @@
 			 xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
 		http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
 			 version="2.0">
-	<persistence-unit name="uaiContactsPU" >
+	<persistence-unit name="kisukePU" >
 
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 		<non-jta-data-source>java:comp/env/jdbc/tomcatDataSource</non-jta-data-source>
 		<class>fr.kisuke.dao.user.JpaUserDao</class>
+		<class>fr.kisuke.dao.picture.JpaPictureDao</class>
+		<class>fr.kisuke.dao.newsentry.JpaNewsEntryDao</class>
+
 		<properties>
 			<property name="hibernate.c3p0.min_size" value="5" />
 			<property name="hibernate.c3p0.max_size" value="20" />
