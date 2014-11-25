@@ -68,11 +68,11 @@
 	<bean id="userDao" class="fr.kisuke.dao.user.JpaUserDao">
 	</bean>
 
-	<bean id="dataBaseInitializer" class="fr.kisuke.dao.DataBaseInitializer" init-method="initDataBase">
-		<constructor-arg ref="userDao" />
-		<constructor-arg ref="newsEntryDao" />
-		<constructor-arg ref="passwordEncoder" />
-	</bean>
+	<!--<bean id="dataBaseInitializer" class="fr.kisuke.dao.DataBaseInitializer" init-method="initDataBase">-->
+		<!--<constructor-arg ref="userDao" />-->
+		<!--<constructor-arg ref="newsEntryDao" />-->
+		<!--<constructor-arg ref="passwordEncoder" />-->
+	<!--</bean>-->
 
 	<tx:annotation-driven transaction-manager="transactionManager" />
 
@@ -104,7 +104,7 @@
 		<security:intercept-url pattern="/rest/user/authenticate"
 								access="permitAll" />
 		<security:intercept-url method="GET" pattern="/rest/news/**"
-								access="hasRole('user')" />
+								access="permitAll" />
 		<security:intercept-url method="PUT" pattern="/rest/news/**"
 								access="hasRole('admin')" />
 		<security:intercept-url method="POST" pattern="/rest/news/**"
