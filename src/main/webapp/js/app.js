@@ -92,12 +92,12 @@ angular.module('exampleApp', ['ngRoute', 'ngCookies', 'exampleApp.services'])
 			delete $rootScope.user;
 			delete $rootScope.authToken;
 			$cookieStore.remove('authToken');
-			$location.path("/login");
+			$location.path("/");
 		};
 		
 		 /* Try getting valid user from cookie or go to login page */
 		var originalPath = $location.path();
-		$location.path("/login");
+		$location.path("/");
 		var authToken = $cookieStore.get('authToken');
 		if (authToken !== undefined) {
 			$rootScope.authToken = authToken;
