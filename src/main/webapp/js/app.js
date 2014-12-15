@@ -1,7 +1,7 @@
 angular.module('exampleApp', ['ngRoute', 'ngCookies', 'exampleApp.services'])
 	.config(
 		[ '$routeProvider', '$locationProvider', '$httpProvider', function($routeProvider, $locationProvider, $httpProvider) {
-			
+
 			$routeProvider.when('/create', {
 				templateUrl: 'partials/create.html',
 				controller: CreateController
@@ -15,6 +15,11 @@ angular.module('exampleApp', ['ngRoute', 'ngCookies', 'exampleApp.services'])
 			$routeProvider.when('/login', {
 				templateUrl: 'partials/login.html',
 				controller: LoginController
+			});
+
+			$routeProvider.when('/signin', {
+				templateUrl: 'partials/signin.html',
+				controller: SigninController
 			});
 			
 			$routeProvider.otherwise({
@@ -97,7 +102,7 @@ angular.module('exampleApp', ['ngRoute', 'ngCookies', 'exampleApp.services'])
 		
 		 /* Try getting valid user from cookie or go to login page */
 		var originalPath = $location.path();
-		$location.path("/login");
+		$location.path("/");
 		var authToken = $cookieStore.get('authToken');
 		if (authToken !== undefined) {
 			$rootScope.authToken = authToken;
@@ -120,6 +125,7 @@ function IndexController($scope, NewsService) {
 			$scope.newsEntries = NewsService.query();
 		});
 	};
+	$scope.rememberMe = false;
 };
 
 
@@ -166,6 +172,9 @@ function LoginController($scope, $rootScope, $location, $cookieStore, UserServic
 	};
 };
 
+function SigninController(){
+
+};
 
 var services = angular.module('exampleApp.services', ['ngResource']);
 
