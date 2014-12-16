@@ -51,17 +51,17 @@
 					<target>1.6</target>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.eclipse.jetty</groupId>
-				<artifactId>jetty-maven-plugin</artifactId>
-				<version>${org.eclipse.jetty.jetty-maven-plugin.version}</version>
-			</plugin>
+			<!--<plugin>-->
+				<!--<groupId>org.eclipse.jetty</groupId>-->
+				<!--<artifactId>jetty-maven-plugin</artifactId>-->
+				<!--<version>${org.eclipse.jetty.jetty-maven-plugin.version}</version>-->
+			<!--</plugin>-->
 		</plugins>
 	</build>
 	
-	<scm>
-		<developerConnection>scm:git:https://github.com/philipsorst/angular-rest-springsecurity.git</developerConnection>
-	</scm>
+	<!--<scm>-->
+		<!--<developerConnection>scm:git:https://github.com/philipsorst/angular-rest-springsecurity.git</developerConnection>-->
+	<!--</scm>-->
 
 	<dependencies>
 
