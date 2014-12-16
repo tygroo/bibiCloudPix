@@ -68,11 +68,11 @@
 	<bean id="userDao" class="fr.kisuke.dao.user.JpaUserDao">
 	</bean>
 
-	<!--<bean id="dataBaseInitializer" class="fr.kisuke.dao.DataBaseInitializer" init-method="initDataBase">-->
-		<!--<constructor-arg ref="userDao" />-->
-		<!--<constructor-arg ref="newsEntryDao" />-->
-		<!--<constructor-arg ref="passwordEncoder" />-->
-	<!--</bean>-->
+	<bean id="dataBaseInitializer" class="fr.kisuke.dao.DataBaseInitializer" init-method="initDataBase">
+		<constructor-arg ref="userDao" />
+		<constructor-arg ref="newsEntryDao" />
+		<constructor-arg ref="passwordEncoder" />
+	</bean>
 
 	<tx:annotation-driven transaction-manager="transactionManager" />
 
