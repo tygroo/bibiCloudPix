@@ -52,7 +52,7 @@
           <element id="library" level="project" name="Maven: org.springframework.security:spring-security-core:3.2.3.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-expression:3.2.8.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.security:spring-security-config:3.2.3.RELEASE" />
-          <element id="library" level="project" name="Maven: postgresql:postgresql:9.1-901-1.jdbc4" />
+          <element id="library" level="project" name="Maven: mysql:mysql-connector-java:5.1.34" />
           <element id="library" level="project" name="Maven: joda-time:joda-time:2.5" />
           <element id="library" level="project" name="Maven: joda-time:joda-time-hibernate:1.3" />
           <element id="library" level="project" name="Maven: org.easytesting:fest-assert-core:2.0M10" />
@@ -62,7 +62,7 @@
         </element>
       </element>
       <element id="directory" name="META-INF">
-        <element id="file-copy" path="D:\Users\Bonheur.mekmek\IdeaProjects\bibiCloudPix\target/MANIFEST.MF" />
+        <element id="file-copy" path="C:\Users\Bonheur\IdeaProjects\bibiCloudPix\target/MANIFEST.MF" />
       </element>
       <element id="javaee-facet-resources" facet="angular-rest-springsecurity/web/Web" />
     </root>

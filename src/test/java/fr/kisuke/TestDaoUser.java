@@ -26,9 +26,12 @@ public class TestDaoUser {
 	public void testFindUserByEmail() {
 		
 
-		Users userUser = new Users("user2", this.passwordEncoder.encode("user"));
+		Users userUser = new Users("user", this.passwordEncoder.encode("user"));
 		userUser.addRole("user");
-		
+
+		Users userAdmin = new Users("admin", this.passwordEncoder.encode("admin"));
+		userAdmin.addRole("admin");
+
 //		 Users adminUser = userDao.find(1L);
 //			adminUser.addRole("user");
 //			adminUser.addRole("admin");
@@ -40,9 +43,10 @@ public class TestDaoUser {
 		
 		// Users user = new Users("user1", passwordEncoder.encode("user"));
 		userDao.save(userUser);
-		Users usrTest = userDao.find(1L);
-		usrTest.addRole("user");
-		userDao.save(usrTest);
+		userDao.save(userAdmin);
+//		Users usrTest = userDao.find(1L);
+//		usrTest.addRole("user");
+//		userDao.save(usrTest);
 
 		assertThat(userDao.findAll()).isNotEmpty();
 		assertThat(userDao.findAll().size()).isGreaterThan(1);
