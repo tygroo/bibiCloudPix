@@ -22,7 +22,7 @@
 		<property name="password" value="bibi" />
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
 		<property name="url"
-				  value="jdbc:mysql://10.0.3.101:3306/cloudpix" />
+				  value="jdbc:mysql://10.0.3.134:3306/cloudpix" />
 		<property name="initialSize" value="5" />
 		<property name="minIdle" value="5" />
 		<property name="maxIdle" value="10" />
@@ -68,11 +68,11 @@
 	<bean id="userDao" class="fr.kisuke.dao.user.JpaUserDao">
 	</bean>
 
-	<bean id="dataBaseInitializer" class="fr.kisuke.dao.DataBaseInitializer" init-method="initDataBase">
-		<constructor-arg ref="userDao" />
-		<constructor-arg ref="newsEntryDao" />
-		<constructor-arg ref="passwordEncoder" />
-	</bean>
+	<!--<bean id="dataBaseInitializer" class="fr.kisuke.dao.DataBaseInitializer" init-method="initDataBase">-->
+		<!--<constructor-arg ref="userDao" />-->
+		<!--<constructor-arg ref="newsEntryDao" />-->
+		<!--<constructor-arg ref="passwordEncoder" />-->
+	<!--</bean>-->
 
 	<tx:annotation-driven transaction-manager="transactionManager" />
 
