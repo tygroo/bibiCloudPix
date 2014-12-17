@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="exploded-war" name="angular-rest-springsecurity:war exploded">
-    <output-path>$PROJECT_DIR$/target/angular-rest-springsecurity-0.2.1-SNAPSHOT</output-path>
+    <output-path>$PROJECT_DIR$/target/cloudPix-0.0.1-SNAPSHOT</output-path>
     <root id="root">
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
@@ -62,7 +62,7 @@
         </element>
       </element>
       <element id="directory" name="META-INF">
-        <element id="file-copy" path="C:\Users\Bonheur\IdeaProjects\bibiCloudPix\target/MANIFEST.MF" />
+        <element id="file-copy" path="D:\Users\Bonheur.mekmek\IdeaProjects\bibiCloudPix\target/MANIFEST.MF" />
       </element>
       <element id="javaee-facet-resources" facet="angular-rest-springsecurity/web/Web" />
     </root>

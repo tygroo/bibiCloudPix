@@ -7,7 +7,7 @@
 	<persistence-unit name="kisukePU" >
 
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-		<non-jta-data-source>java:comp/env/jdbc/tomcatDataSource</non-jta-data-source>
+		<!--<non-jta-data-source>java:comp/env/jdbc/tomcatDataSource</non-jta-data-source>-->
 		<class>fr.kisuke.dao.user.JpaUserDao</class>
 		<class>fr.kisuke.dao.picture.JpaPictureDao</class>
 		<class>fr.kisuke.dao.newsentry.JpaNewsEntryDao</class>
@@ -17,7 +17,7 @@
 			<property name="hibernate.c3p0.max_size" value="20" />
 			<property name="hibernate.c3p0.timeout" value="1800" />
 			<property name="hibernate.c3p0.max_statements" value="50" />
-			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL9Dialect" />
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
 			<property name="hibernate.hbm2ddl.auto" value="update" />
 		</properties>
 	</persistence-unit>
