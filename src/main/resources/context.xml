@@ -16,8 +16,7 @@
 
 	<!-- DATABASE SETUP -->
 
-	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
-		  destroy-method="close">
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
 		<property name="username" value="bibi" />
 		<property name="password" value="bibi" />
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
