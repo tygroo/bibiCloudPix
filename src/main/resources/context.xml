@@ -43,7 +43,7 @@
 		<property name="jpaVendorAdapter">
 			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
 				<property name="database" value="MYSQL" />
-				<property name="databasePlatform" value="org.hibernate.dialect.MySQL5Dialect" />
+				<property name="databasePlatform" value="org.hibernate.dialect.MySQLDialect" />
 				<property name="showSql" value="true" />
 			</bean>
 
