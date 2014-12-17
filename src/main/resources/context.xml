@@ -16,22 +16,22 @@
 
 	<!-- DATABASE SETUP -->
 
-	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
 		<property name="username" value="bibi" />
 		<property name="password" value="bibi" />
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
 		<property name="url"
 				  value="jdbc:mysql://198.27.66.107:3306/cloudpix" />
-		<!--<property name="initialSize" value="5" />-->
-		<!--<property name="minIdle" value="5" />-->
-		<!--<property name="maxIdle" value="10" />-->
-		<!--<property name="maxActive" value="20" />-->
-		<!--<property name="timeBetweenEvictionRunsMillis" value="30000" />-->
-		<!--<property name="minEvictableIdleTimeMillis" value="60000" />-->
-		<!--<property name="testOnBorrow" value="true"></property>-->
+		<property name="initialSize" value="5" />
+		<property name="minIdle" value="5" />
+		<property name="maxIdle" value="10" />
+		<property name="maxActive" value="20" />
+		<property name="timeBetweenEvictionRunsMillis" value="30000" />
+		<property name="minEvictableIdleTimeMillis" value="60000" />
+		<property name="testOnBorrow" value="true"></property>
 		<!-- <property name="validationQueryTimeout" value="${jdbc.validation.query.timeout}" 
 			/> --> <!-- NOT IMPLEMENTED -->
-		<!--<property name="validationQuery" value="select version()"></property>-->
+		<property name="validationQuery" value="select 1"></property>
 	</bean>
 
 	<bean id="entityManagerFactory"
