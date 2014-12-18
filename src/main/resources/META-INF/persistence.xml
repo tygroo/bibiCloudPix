@@ -8,7 +8,7 @@
 
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
-		<!--<non-jta-data-source>java:comp/env/jdbc/tomcatDataSource</non-jta-data-source>-->
+		<non-jta-data-source>java:comp/env/jdbc/tomcatDataSource</non-jta-data-source>
 		<class>fr.kisuke.dao.user.JpaUserDao</class>
 		<class>fr.kisuke.dao.picture.JpaPictureDao</class>
 		<class>fr.kisuke.dao.newsentry.JpaNewsEntryDao</class>

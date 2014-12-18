@@ -12,15 +12,15 @@
             maxIdle="3"
             minIdle="1"
             maxWait="5000"
-            username="postgres"
+            username="bibi"
             password="bibi"
-            driverClassName="org.postgresql.Driver"
-            validationQuery="SELECT 'OK'"
+            driverClassName="com.mysql.jdbc.Driver"
+            validationQuery="SELECT 1"
             testWhileIdle="true"
             testOnBorrow="true"
             numTestsPerEvictionRun="5"
             timeBetweenEvictionRunsMillis="30000"
             minEvictableIdleTimeMillis="60000"
-            url="jdbc:postgresql://localhost:5432/cloudPix" />
+            url="jdbc:mysql://198.27.66.107:3306/cloudpix" />
 
 </Context>
