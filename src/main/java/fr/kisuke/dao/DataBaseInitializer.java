@@ -12,8 +12,7 @@ import fr.kisuke.entity.Users;
 
 /**
  * Initialize the database with some test entries.
- * 
- * @author Philip W. Sorst <philip@sorst.net>
+ *
  */
 public class DataBaseInitializer
 {

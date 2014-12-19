@@ -116,37 +116,37 @@ angular.module('exampleApp', ['ngRoute', 'ngCookies', 'exampleApp.services'])
 	});
 
 
-function IndexController($scope, NewsService) {
+function IndexController($scope, PicturesService) {
 	
-	$scope.newsEntries = NewsService.query();
+	$scope.pictureEntries = PicturesService.query();
 	
-	$scope.deleteEntry = function(newsEntry) {
-		newsEntry.$remove(function() {
-			$scope.newsEntries = NewsService.query();
+	$scope.deleteEntry = function(pictureEntry) {
+		pictureEntry.$remove(function() {
+			$scope.pictureEntries = PicturesService.query();
 		});
 	};
 	$scope.rememberMe = false;
 };
 
 
-function EditController($scope, $routeParams, $location, NewsService) {
+function EditController($scope, $routeParams, $location, PicturesService) {
 
-	$scope.newsEntry = NewsService.get({id: $routeParams.id});
+	$scope.pictureEntry = PicturesService.get({id: $routeParams.id});
 	
 	$scope.save = function() {
-		$scope.newsEntry.$save(function() {
+		$scope.pictureEntry.$save(function() {
 			$location.path('/');
 		});
 	};
 };
 
 
-function CreateController($scope, $location, NewsService) {
+function CreateController($scope, $location, PicturesService) {
 	
-	$scope.newsEntry = new NewsService();
+	$scope.pictureEntry = new PicturesService();
 	
 	$scope.save = function() {
-		$scope.newsEntry.$save(function() {
+		$scope.pictureEntry.$save(function() {
 			$location.path('/');
 		});
 	};
