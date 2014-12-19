@@ -195,3 +195,8 @@ services.factory('NewsService', function($resource) {
 	
 	return $resource('rest/news/:id', {id: '@id'});
 });
+
+services.factory('PicturesService', function($resource) {
+
+	return $resource('rest/picture/:id', {id: '@id'});
+});
