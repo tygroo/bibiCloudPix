@@ -2,11 +2,16 @@ angular.module('exampleApp', ['ngRoute', 'ngCookies', 'exampleApp.services'])
 	.config(
 		[ '$routeProvider', '$locationProvider', '$httpProvider', function($routeProvider, $locationProvider, $httpProvider) {
 
+			$routeProvider.when('/', {
+				templateUrl: 'partials/index.html',
+				controller: SigninController
+			});
+
 			$routeProvider.when('/create', {
 				templateUrl: 'partials/create.html',
 				controller: CreateController
 			});
-			
+
 			$routeProvider.when('/edit/:id', {
 				templateUrl: 'partials/edit.html',
 				controller: EditController
@@ -21,14 +26,14 @@ angular.module('exampleApp', ['ngRoute', 'ngCookies', 'exampleApp.services'])
 				templateUrl: 'partials/signin.html',
 				controller: SigninController
 			});
-			
+
 			$routeProvider.otherwise({
 				templateUrl: 'partials/index.html',
 				controller: IndexController
 			});
-			
+
 			$locationProvider.hashPrefix('!');
-			
+
 			/* Register error provider that shows message on failed requests or redirects to login page on
 			 * unauthenticated requests */
 		    $httpProvider.interceptors.push(function ($q, $rootScope, $location) {
@@ -38,19 +43,19 @@ angular.module('exampleApp', ['ngRoute', 'ngCookies', 'exampleApp.services'])
 			        		var config = rejection.config;
 			        		var method = config.method;
 			        		var url = config.url;
-			      
+
 			        		if (status == 401) {
 			        			$location.path( "/login" );
 			        		} else {
 			        			$rootScope.error = method + " on " + url + " failed with status " + status;
 			        		}
-			              
+
 			        		return $q.reject(rejection);
 			        	}
 			        };
 			    }
 		    );
-		    
+
 		    /* Registers auth token interceptor, auth token is either passed by header or by query parameter
 		     * as soon as there is an authenticated user */
 		    $httpProvider.interceptors.push(function ($q, $rootScope, $location) {
@@ -70,36 +75,36 @@ angular.module('exampleApp', ['ngRoute', 'ngCookies', 'exampleApp.services'])
 		        };
 		    }
 	    );
-		   
+
 		} ]
-		
+
 	).run(function($rootScope, $location, $cookieStore, UserService) {
-		
+
 		/* Reset error when a new view is loaded */
 		$rootScope.$on('$viewContentLoaded', function() {
 			delete $rootScope.error;
 		});
-		
+
 		$rootScope.hasRole = function(role) {
-			
+
 			if ($rootScope.user === undefined) {
 				return false;
 			}
-			
+
 			if ($rootScope.user.roles[role] === undefined) {
 				return false;
 			}
-			
+
 			return $rootScope.user.roles[role];
 		};
-		
+
 		$rootScope.logout = function() {
 			delete $rootScope.user;
 			delete $rootScope.authToken;
 			$cookieStore.remove('authToken');
 			$location.path("/");
 		};
-		
+
 		 /* Try getting valid user from cookie or go to login page */
 		var originalPath = $location.path();
 		$location.path("/");
@@ -111,15 +116,15 @@ angular.module('exampleApp', ['ngRoute', 'ngCookies', 'exampleApp.services'])
 				$location.path(originalPath);
 			});
 		}
-		
+
 		$rootScope.initialized = true;
 	});
 
 
 function IndexController($scope, PicturesService) {
-	
+
 	$scope.pictureEntries = PicturesService.query();
-	
+	console.log("test index");
 	$scope.deleteEntry = function(pictureEntry) {
 		pictureEntry.$remove(function() {
 			$scope.pictureEntries = PicturesService.query();
@@ -132,7 +137,7 @@ function IndexController($scope, PicturesService) {
 function EditController($scope, $routeParams, $location, PicturesService) {
 
 	$scope.pictureEntry = PicturesService.get({id: $routeParams.id});
-	
+
 	$scope.save = function() {
 		$scope.pictureEntry.$save(function() {
 			$location.path('/');
@@ -142,9 +147,9 @@ function EditController($scope, $routeParams, $location, PicturesService) {
 
 
 function CreateController($scope, $location, PicturesService) {
-	
+
 	$scope.pictureEntry = new PicturesService();
-	
+	console.log("test create");
 	$scope.save = function() {
 		$scope.pictureEntry.$save(function() {
 			$location.path('/');
@@ -154,9 +159,9 @@ function CreateController($scope, $location, PicturesService) {
 
 
 function LoginController($scope, $rootScope, $location, $cookieStore, UserService) {
-	
+
 	$scope.rememberMe = false;
-	
+
 	$scope.login = function() {
 		UserService.authenticate($.param({username: $scope.username, password: $scope.password}), function(authenticationResult) {
 			var authToken = authenticationResult.token;

@@ -67,8 +67,6 @@ public class JpaDao<T extends Entity, I> implements Dao<T, I>
 	public T save(T entity)
 	{
 		return this.getEntityManager().merge(entity);
-	
-		
 	}
 
 	@Override
