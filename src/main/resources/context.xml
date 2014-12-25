@@ -22,6 +22,8 @@
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
 		<property name="url"
 				  value="jdbc:mysql://10.0.3.134:3306/cloudpix" />
+		<!-- <property name="url"
+				  value="jdbc:mysql://198.27.66.107:3306/cloudpix" /> -->
 		<property name="initialSize" value="5" />
 		<property name="minIdle" value="5" />
 		<property name="maxIdle" value="10" />
@@ -98,7 +100,7 @@
 	<security:http realm="Protected API" use-expressions="true"
 				   auto-config="false" create-session="stateless" entry-point-ref="unauthorizedEntryPoint"
 				   authentication-manager-ref="authenticationManager">
-		<security:intercept-url pattern="/**" requires-channel="https" />
+		<!-- <security:intercept-url pattern="/**" requires-channel="https" /> -->
 		<security:custom-filter ref="authenticationTokenProcessingFilter"
 								position="FORM_LOGIN_FILTER" />
 		<security:intercept-url pattern="/rest/user/authenticate"
