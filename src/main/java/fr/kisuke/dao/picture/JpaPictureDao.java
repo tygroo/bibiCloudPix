@@ -31,7 +31,7 @@ public class JpaPictureDao extends JpaDao<Pictures, Long> implements PictureDao
 		final CriteriaQuery<Pictures> criteriaQuery = builder.createQuery(Pictures.class);
 
 		Root<Pictures> root = criteriaQuery.from(Pictures.class);
-		criteriaQuery.orderBy(builder.desc(root.get("date")));
+		//criteriaQuery.orderBy(builder.desc(root.get("date")));
 
 		TypedQuery<Pictures> typedQuery = this.getEntityManager().createQuery(criteriaQuery);
 		return typedQuery.getResultList();

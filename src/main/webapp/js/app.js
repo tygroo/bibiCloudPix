@@ -2,10 +2,6 @@ angular.module('exampleApp', ['ngRoute', 'ngCookies', 'exampleApp.services'])
 	.config(
 		[ '$routeProvider', '$locationProvider', '$httpProvider', function($routeProvider, $locationProvider, $httpProvider) {
 
-			$routeProvider.when('/', {
-				templateUrl: 'partials/index.html',
-				controller: SigninController
-			});
 
 			$routeProvider.when('/create', {
 				templateUrl: 'partials/create.html',
@@ -107,7 +103,7 @@ angular.module('exampleApp', ['ngRoute', 'ngCookies', 'exampleApp.services'])
 
 		 /* Try getting valid user from cookie or go to login page */
 		var originalPath = $location.path();
-		$location.path("/");
+		$location.path("/ ");
 		var authToken = $cookieStore.get('authToken');
 		if (authToken !== undefined) {
 			$rootScope.authToken = authToken;
@@ -122,9 +118,9 @@ angular.module('exampleApp', ['ngRoute', 'ngCookies', 'exampleApp.services'])
 
 
 function IndexController($scope, PicturesService) {
-
-	$scope.pictureEntries = PicturesService.query();
 	console.log("test index");
+	$scope.pictureEntries = PicturesService.query();
+
 	$scope.deleteEntry = function(pictureEntry) {
 		pictureEntry.$remove(function() {
 			$scope.pictureEntries = PicturesService.query();
@@ -149,7 +145,7 @@ function EditController($scope, $routeParams, $location, PicturesService) {
 function CreateController($scope, $location, PicturesService) {
 
 	$scope.pictureEntry = new PicturesService();
-	console.log("test create");
+	console.log("test create "+$scope.pictureEntry);
 	$scope.save = function() {
 		$scope.pictureEntry.$save(function() {
 			$location.path('/');
@@ -184,14 +180,14 @@ function SigninController(){
 var services = angular.module('exampleApp.services', ['ngResource']);
 
 services.factory('UserService', function($resource) {
-	
+
 	return $resource('rest/user/:action', {},
 			{
 				authenticate: {
 					method: 'POST',
 					params: {'action' : 'authenticate'},
 					headers : {'Content-Type': 'application/x-www-form-urlencoded'}
-				},
+				}
 			}
 		);
 });
