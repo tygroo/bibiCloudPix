@@ -71,7 +71,6 @@ angular.module('exampleApp', ['ngRoute', 'ngCookies', 'exampleApp.services'])
 		        };
 		    }
 	    );
-
 		} ]
 
 	).run(function($rootScope, $location, $cookieStore, UserService) {
@@ -145,7 +144,7 @@ function EditController($scope, $routeParams, $location, PicturesService) {
 function CreateController($scope, $location, PicturesService) {
 
 	$scope.pictureEntry = new PicturesService();
-	console.log("test create "+$scope.pictureEntry);
+	console.log("test create ");
 	$scope.save = function() {
 		$scope.pictureEntry.$save(function() {
 			$location.path('/');

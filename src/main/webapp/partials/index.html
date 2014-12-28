@@ -1,5 +1,5 @@
 <div class="pull-right">
-	<a href="#!/create" class="btn btn-default" ng-show="permitAll" title="Create"><span class="glyphicon glyphicon-plus"></span></a>
+	<a href="#!/create" class="btn btn-default" title="Create"><span class="glyphicon glyphicon-plus"></span></a>
 </div>
 <div class="page-header">
 	<h3>Images</h3>
@@ -8,8 +8,11 @@
 <div ng-repeat="pictureEntry in pictureEntries">
 	<hr />
 	<div class="pull-right">
-		<a href="" ng-click="deleteEntry(pictureEntry)" class="btn btn-xs btn-default"  title="delete"><span class="glyphicon glyphicon-trash"></span></a>
-		<a href="#!/edit/{{pictureEntry.id}}" class="btn btn-xs btn-default"  title="edit"><span class="glyphicon glyphicon-pencil"></span></a>
+		<a href="" ng-click="deleteEntry(pictureEntry)" class="btn btn-xs btn-default"  title="delete" ng-show="hasRole('user')"><span class="glyphicon glyphicon-trash"></span></a>
+		<a href="" ng-click="deleteEntry(pictureEntry)" class="btn btn-xs btn-default"  title="delete" ng-show="hasRole('admin')"><span class="glyphicon glyphicon-trash"></span></a>
+
+		<a href="#!/edit/{{pictureEntry.id}}" class="btn btn-xs btn-default" ng-show="hasRole('user')" title="edit"><span class="glyphicon glyphicon-pencil"></span></a>
+		<a href="#!/edit/{{pictureEntry.id}}" class="btn btn-xs btn-default" ng-show="hasRole('admin')" title="edit"><span class="glyphicon glyphicon-pencil"></span></a>
 	</div>
 	<h4>{{pictureEntry.name}}</h4>
 	<p>{{pictureEntry.nameLow}}</p>
