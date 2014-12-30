@@ -1,24 +1,21 @@
 package fr.kisuke.rest.resources;
 
-import com.sun.jersey.core.header.FormDataContentDisposition;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.FormParam;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.core.Context;
-import java.io.InputStream;
-
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
+import java.util.List;
+import java.util.Map;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response;
+import org.apache.commons.io.IOUtils;
+import org.jboss.resteasy.plugins.providers.multipart.InputPart;
+import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
+import org.springframework.stereotype.Component;
 
 
 /**
@@ -27,47 +24,58 @@ import java.io.OutputStream;
 @Component
 @Path("/upload")
 public class UploadResource {
-    private static final String SERVER_UPLOAD_LOCATION_FOLDER = "C://Users/nikos/Desktop/Upload_Files/";
+    private final String UPLOADED_FILE_PATH = "c:/temp/";
 
-    /**
-     * Upload a File
-     */
+    @POST
+    @Path("/image-upload")
+    @Consumes("multipart/form-data")
+    public Response uploadFile(MultipartFormDataInput input) throws IOException
+    {
+        //Get API input data
+        Map<String, List<InputPart>> uploadForm = input.getFormDataMap();
 
-//    @POST
-//    public Response uploadFile(
-//            @FormDataParam("file") InputStream fileInputStream,
-//            @FormDataParam("file") FormDataContentDisposition contentDispositionHeader) {
-//
-//        String filePath = SERVER_UPLOAD_LOCATION_FOLDER	+ contentDispositionHeader.getFileName();
-//
-//        // save the file to the server
-//        saveFile(fileInputStream, filePath);
-//
-//        String output = "File saved to server location : " + filePath;
-//
-//        return Response.status(200).entity(output).build();
-//
-//    }
+        //Get file name
+        String fileName = uploadForm.get("fileName").get(0).getBodyAsString();
 
-    // save uploaded file to a defined location on the server
-    private void saveFile(InputStream uploadedInputStream,
-                          String serverLocation) {
+        //Get file data to save
+        List<InputPart> inputParts = uploadForm.get("attachment");
 
-        try {
-            OutputStream outpuStream = new FileOutputStream(new File(serverLocation));
-            int read = 0;
-            byte[] bytes = new byte[1024];
+        for (InputPart inputPart : inputParts)
+        {
+            try
+            {
+                //Use this header for extra processing if required
+                @SuppressWarnings("unused")
+                MultivaluedMap<String, String> header = inputPart.getHeaders();
 
-            outpuStream = new FileOutputStream(new File(serverLocation));
-            while ((read = uploadedInputStream.read(bytes)) != -1) {
-                outpuStream.write(bytes, 0, read);
+                // convert the uploaded file to inputstream
+                InputStream inputStream = inputPart.getBody(InputStream.class, null);
+
+                byte[] bytes = IOUtils.toByteArray(inputStream);
+                // constructs upload file path
+                fileName = UPLOADED_FILE_PATH + fileName;
+                writeFile(bytes, fileName);
+                System.out.println("Success !!!!!");
             }
-            outpuStream.flush();
-            outpuStream.close();
-        } catch (IOException e) {
-
-            e.printStackTrace();
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
         }
+        return Response.status(200)
+                .entity("Uploaded file name : "+ fileName).build();
+    }
 
+    //Utility method
+    private void writeFile(byte[] content, String filename) throws IOException
+    {
+        File file = new File(filename);
+        if (!file.exists()) {
+            file.createNewFile();
+        }
+        FileOutputStream fop = new FileOutputStream(file);
+        fop.write(content);
+        fop.flush();
+        fop.close();
     }
 }
