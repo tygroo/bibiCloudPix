@@ -10,7 +10,7 @@
 		<!-- Spring Security is based on Spring 3.0.7 -->
 		<spring.version>3.2.8.RELEASE</spring.version>
 		<spring.security.version>3.2.3.RELEASE</spring.security.version>
-		<jersey.version>1.18.1</jersey.version>
+		<jersey.version>1.17.1</jersey.version>
 		<org.slf4j.version>1.7.7</org.slf4j.version>
 		<javax.servlet-api.version>2.5</javax.servlet-api.version>
 		<org.hibernate.version>4.3.7.Final</org.hibernate.version>
@@ -226,19 +226,50 @@
 		<dependency>
 			<groupId>org.jboss.resteasy</groupId>
 			<artifactId>resteasy-jaxrs</artifactId>
-			<version>2.2.1.GA</version>
+			<version>2.3.1.GA</version>
 		</dependency>
+		<dependency>
+			<groupId>net.sf.scannotation</groupId>
+			<artifactId>scannotation</artifactId>
+			<version>1.0.2</version>
+		</dependency>
+		<!-- JAXB provider -->
+		<dependency>
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>resteasy-jaxb-provider</artifactId>
+			<version>2.3.1.GA</version>
+		</dependency>
+		<!-- Multipart support -->
 		<dependency>
 			<groupId>org.jboss.resteasy</groupId>
 			<artifactId>resteasy-multipart-provider</artifactId>
-			<version>2.2.0.GA</version>
+			<version>2.3.1.GA</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-servlet</artifactId>
+			<version>1.17</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.jersey.contribs</groupId>
+			<artifactId>jersey-multipart</artifactId>
+			<version>1.17</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-json</artifactId>
+			<version>1.17</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-bundle</artifactId>
+			<version>1.17</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jvnet</groupId>
 			<artifactId>mimepull</artifactId>
 			<version>1.6</version>
 		</dependency>
-
 
 		<!-- optional, good for handle I/O task -->
 		<dependency>
