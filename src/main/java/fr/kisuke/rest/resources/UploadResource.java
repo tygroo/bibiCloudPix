@@ -33,7 +33,7 @@ import org.apache.commons.io.FilenameUtils;
 //@Controller
 //@RequestMapping("")
 public class UploadResource {
-    private final String UPLOADED_FILE_PATH = "/srv/data/";//"c:/temp/";
+    private final String UPLOADED_FILE_PATH = "/srv/data/";//"c:/temp/"; //"/srv/data/";
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
