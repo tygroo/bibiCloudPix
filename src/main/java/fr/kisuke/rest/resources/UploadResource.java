@@ -11,6 +11,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import com.sun.jersey.multipart.FormDataParam;
 import fr.kisuke.dao.picture.PictureDao;
+import fr.kisuke.dao.user.UserDao;
 import fr.kisuke.entity.Pictures;
 import org.apache.commons.io.IOUtils;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -18,6 +19,9 @@ import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.apache.commons.io.FilenameUtils;
 
@@ -39,6 +43,9 @@ public class UploadResource {
 
     @Autowired
     private PictureDao pictureDao;
+
+    @Autowired
+    private UserDao userDao;
 
     @Autowired
     private ObjectMapper mapper;
@@ -94,7 +101,7 @@ public class UploadResource {
 
     //save to somewhere
     private void writeFile(byte[] content, String filename) throws IOException {
-
+        UserDetails userdetails = isAdmin();
         DateTime now = new DateTime();
 
         String path = FilenameUtils.getFullPath(filename);
@@ -143,6 +150,8 @@ public class UploadResource {
         picture.setNameLow(nameLow);
         picture.setPath(path);
 
+        picture.setUser(userDao.findByName(userdetails.getUsername()));
+
         this.pictureDao.save(picture);
     }
 
@@ -153,5 +162,18 @@ public class UploadResource {
         fop.flush();
         fop.close();
     }
+
+    private UserDetails isAdmin()
+    {
+        //UserDetails userDetails = null;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Object principal = authentication.getPrincipal();
+        if (principal instanceof String && ((String) principal).equals("anonymousUser")) {
+            return null;
+        }else {
+            return (UserDetails) principal;
+        }
+    }
+
 
 }

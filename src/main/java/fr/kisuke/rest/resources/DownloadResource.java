@@ -1,8 +1,14 @@
 package fr.kisuke.rest.resources;
 
+import fr.kisuke.JsonViews;
 import fr.kisuke.dao.picture.PictureDao;
 import fr.kisuke.entity.Pictures;
+import org.codehaus.jackson.map.ObjectWriter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -24,16 +30,42 @@ public class DownloadResource {
     @Path("getImage/{imageId}")
     @Produces("image/*")
     public Response getImage(@PathParam(value = "imageId") Long imageId) {
+        Pictures pictureToSend = getPictures(imageId);
 
-        //Recuperation de l'image de la bdd
-        Pictures picture = pictureDao.find(imageId);
 
         //Construction de la requete du fichier
-        String fileName = picture.getPath()+picture.getNameHight();
-        String exactName = picture.getName();
+        String fileName = pictureToSend.getPath()+pictureToSend.getNameHight();
+        String exactName = pictureToSend.getName();
 
         //Put some validations here such as invalid file name or missing file name
         return getResponse(fileName, exactName);
+    }
+
+    private Pictures getPictures(Long imageId) {
+        //Recuperation de l'image de la bdd
+        Pictures picture = pictureDao.find(imageId);
+        Pictures pictureToSend = null;
+
+        UserDetails userDetails = this.isAdmin();
+
+        if (null != userDetails ) {
+            for (GrantedAuthority authority : userDetails.getAuthorities()) {
+                if (authority.toString().equals("admin")) {
+                    pictureToSend = picture;
+                } else if (authority.toString().equals("user")) {
+
+                        if (userDetails.getUsername() == picture.getUser().getUsername()) {
+                            pictureToSend = picture;
+                        }
+
+                }
+            }
+        }else {
+                if (null == picture.getUser()){
+                    pictureToSend = picture;
+                }
+        }
+        return pictureToSend;
     }
 
     @GET
@@ -42,11 +74,12 @@ public class DownloadResource {
     public Response getImageMed(@PathParam(value = "imageId") Long imageId) {
 
         //Recuperation de l'image de la bdd
-        Pictures picture = pictureDao.find(imageId);
+        Pictures pictureToSend = getPictures(imageId);
+
 
         //Construction de la requete du fichier
-        String fileName = picture.getPath()+picture.getNameMed();
-        String exactName = picture.getName();
+        String fileName = pictureToSend.getPath()+pictureToSend.getNameMed();
+        String exactName = pictureToSend.getName();
 
         //Put some validations here such as invalid file name or missing file name
         return getResponse(fileName, exactName);
@@ -58,11 +91,12 @@ public class DownloadResource {
     public Response getImageLow(@PathParam(value = "imageId") Long imageId) {
 
         //Recuperation de l'image de la bdd
-        Pictures picture = pictureDao.find(imageId);
+        Pictures pictureToSend = getPictures(imageId);
+
 
         //Construction de la requete du fichier
-        String fileName = picture.getPath()+picture.getNameLow();
-        String exactName = picture.getName();
+        String fileName = pictureToSend.getPath()+pictureToSend.getNameLow();
+        String exactName = pictureToSend.getName();
         return getResponse(fileName, exactName);
     }
 
@@ -83,4 +117,17 @@ public class DownloadResource {
         }
         return Response.noContent().build();
     }
+
+    private UserDetails isAdmin()
+    {
+        //UserDetails userDetails = null;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Object principal = authentication.getPrincipal();
+        if (principal instanceof String && ((String) principal).equals("anonymousUser")) {
+            return null;
+        }else {
+            return (UserDetails) principal;
+        }
+    }
+
 }

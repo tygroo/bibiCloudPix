@@ -15,6 +15,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,6 +28,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -34,7 +36,6 @@ import java.util.List;
 @Path("/picture")
 public class PictureResource
 {
-
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
@@ -49,16 +50,36 @@ public class PictureResource
 	public String list() throws JsonGenerationException, JsonMappingException, IOException
 	{
 		this.logger.info("list()");
-
-		ObjectWriter viewWriter;
-		if (this.isAdmin()) {
-			viewWriter = this.mapper.writerWithView(JsonViews.Admin.class);
-		} else {
-			viewWriter = this.mapper.writerWithView(JsonViews.User.class);
-		}
 		List<Pictures> allEntries = this.pictureDao.findAll();
+		List<Pictures> entriesToShow = new ArrayList<Pictures>(0);
 
-		return viewWriter.writeValueAsString(allEntries);
+		UserDetails userDetails = this.isAdmin();
+
+		ObjectWriter viewWriter = null;
+
+		if (null != userDetails ) {
+			for (GrantedAuthority authority : userDetails.getAuthorities()) {
+				if (authority.toString().equals("admin")) {
+					viewWriter = this.mapper.writerWithView(JsonViews.Admin.class);
+					entriesToShow = allEntries;
+				} else if (authority.toString().equals("user")) {
+					viewWriter = this.mapper.writerWithView(JsonViews.User.class);
+					for (Pictures pict : allEntries) {
+						if (userDetails.getUsername() == pict.getUser().getUsername()) {
+							entriesToShow.add(pict);
+						}
+					}
+				}
+			}
+		}else {
+			viewWriter = this.mapper.writerWithView(JsonViews.User.class);
+			for( Pictures pict: allEntries ){
+				if (null == pict.getUser()){
+					entriesToShow.add(pict);
+				}
+			}
+		}
+		return viewWriter.writeValueAsString(entriesToShow);
 	}
 
 
@@ -70,12 +91,13 @@ public class PictureResource
 		this.logger.info("read(id)");
 
 		Pictures picture = this.pictureDao.find(id);
+
+
 		if (picture == null) {
 			throw new WebApplicationException(404);
 		}
 		return picture;
 	}
-
 
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
@@ -111,22 +133,16 @@ public class PictureResource
 	}
 
 
-	private boolean isAdmin()
+	private UserDetails isAdmin()
 	{
+		//UserDetails userDetails = null;
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		Object principal = authentication.getPrincipal();
 		if (principal instanceof String && ((String) principal).equals("anonymousUser")) {
-			return false;
+			return null;
+		}else {
+			return (UserDetails) principal;
 		}
-		UserDetails userDetails = (UserDetails) principal;
-
-		for (GrantedAuthority authority : userDetails.getAuthorities()) {
-			if (authority.toString().equals("admin")) {
-				return true;
-			}
-		}
-
-		return false;
 	}
 
 }
