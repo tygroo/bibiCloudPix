@@ -3,25 +3,17 @@ package fr.kisuke.rest.resources;
 
 
 import java.io.*;
-import java.sql.Timestamp;
-import java.util.List;
-import java.util.Map;
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
-
-import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataParam;
 import fr.kisuke.dao.picture.PictureDao;
 import fr.kisuke.entity.Pictures;
 import org.apache.commons.io.IOUtils;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.jboss.resteasy.plugins.providers.multipart.InputPart;
-import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,7 +33,7 @@ import org.apache.commons.io.FilenameUtils;
 //@Controller
 //@RequestMapping("")
 public class UploadResource {
-    private final String UPLOADED_FILE_PATH = "c:/temp/";
+    private final String UPLOADED_FILE_PATH = "/srv/data/";//"c:/temp/";
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -105,12 +97,19 @@ public class UploadResource {
 
         DateTime now = new DateTime();
 
-        String basename = FilenameUtils.getFullPath(filename)+ FilenameUtils.getBaseName(filename)+now.getMillis();
+        String path = FilenameUtils.getFullPath(filename);
+        String basename =  FilenameUtils.getBaseName(filename)+now.getMillis();
         String extension = FilenameUtils.getExtension(filename);
 
-        String filenameNorm = basename+"."+extension;
-        String filenameMed = basename+"-Med."+extension;
-        String filenameLow = basename+"-Low."+extension;
+        String nameNorm = basename+"."+extension;
+        String nameMed = basename+"-Med."+extension;
+        String nameLow =  basename+"-Low."+extension;
+
+        String filenameNorm = path + nameNorm;
+        String filenameMed = path + nameMed;
+        String filenameLow = path + nameLow;
+
+
 
         Pictures picture = new Pictures();
         //picture.setCreationDate(now);
@@ -132,32 +131,27 @@ public class UploadResource {
         }
 
 
-        FileOutputStream fop1 = new FileOutputStream(file);
+        recordFileOnDisk(content, file);
 
-        fop1.write(content);
-        fop1.flush();
-        fop1.close();
+        recordFileOnDisk(content, fileMed);
 
-        FileOutputStream fop2 = new FileOutputStream(filenameMed);
+        recordFileOnDisk(content, fileLow);
 
-        fop2.write(content);
-        fop2.flush();
-        fop2.close();
-
-        FileOutputStream fop3 = new FileOutputStream(filenameLow);
-
-        fop3.write(content);
-        fop3.flush();
-        fop3.close();
-
-        picture.setName(basename);
-        picture.setNameHight(filenameNorm);
-        picture.setNameMed(filenameMed);
-        picture.setNameLow(filenameLow);
-        picture.setPath(FilenameUtils.getFullPath(filename));
         picture.setName(FilenameUtils.getName(filename));
+        picture.setNameHight(nameNorm);
+        picture.setNameMed(nameMed);
+        picture.setNameLow(nameLow);
+        picture.setPath(path);
 
         this.pictureDao.save(picture);
+    }
+
+    private void recordFileOnDisk(byte[] content, File file) throws IOException {
+        FileOutputStream fop = new FileOutputStream(file);
+
+        fop.write(content);
+        fop.flush();
+        fop.close();
     }
 
 }
