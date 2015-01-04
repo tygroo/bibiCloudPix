@@ -1,4 +1,4 @@
-angular.module('exampleApp', ['ngRoute', 'ngCookies', 'exampleApp.services'])
+angular.module('exampleApp', ['ngRoute', 'ngCookies', 'exampleApp.services','angularFileUpload'])
 	.config(
 		[ '$routeProvider', '$locationProvider', '$httpProvider', function($routeProvider, $locationProvider, $httpProvider) {
 
@@ -73,7 +73,7 @@ angular.module('exampleApp', ['ngRoute', 'ngCookies', 'exampleApp.services'])
 	    );
 		} ]
 
-	).run(function($rootScope, $location, $cookieStore, UserService) {
+	).run(function($rootScope, $location, $cookieStore, UserService, FileUploader) {
 
 		/* Reset error when a new view is loaded */
 		$rootScope.$on('$viewContentLoaded', function() {
@@ -113,6 +113,57 @@ angular.module('exampleApp', ['ngRoute', 'ngCookies', 'exampleApp.services'])
 		}
 
 		$rootScope.initialized = true;
+	})
+	.controller('exampleApp', function($scope, FileUploader) {
+		$scope.uploader = new FileUploader();
+
+		// FILTERS
+
+		uploader.filters.push({
+			name: 'imageFilter',
+			fn: function(item /*{File|FileLikeObject}*/, options) {
+				var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
+				return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
+			}
+		});
+
+		// CALLBACKS
+
+		uploader.onWhenAddingFileFailed = function(item /*{File|FileLikeObject}*/, filter, options) {
+			console.info('onWhenAddingFileFailed', item, filter, options);
+		};
+		uploader.onAfterAddingFile = function(fileItem) {
+			console.info('onAfterAddingFile', fileItem);
+		};
+		uploader.onAfterAddingAll = function(addedFileItems) {
+			console.info('onAfterAddingAll', addedFileItems);
+		};
+		uploader.onBeforeUploadItem = function(item) {
+			console.info('onBeforeUploadItem', item);
+		};
+		uploader.onProgressItem = function(fileItem, progress) {
+			console.info('onProgressItem', fileItem, progress);
+		};
+		uploader.onProgressAll = function(progress) {
+			console.info('onProgressAll', progress);
+		};
+		uploader.onSuccessItem = function(fileItem, response, status, headers) {
+			console.info('onSuccessItem', fileItem, response, status, headers);
+		};
+		uploader.onErrorItem = function(fileItem, response, status, headers) {
+			console.info('onErrorItem', fileItem, response, status, headers);
+		};
+		uploader.onCancelItem = function(fileItem, response, status, headers) {
+			console.info('onCancelItem', fileItem, response, status, headers);
+		};
+		uploader.onCompleteItem = function(fileItem, response, status, headers) {
+			console.info('onCompleteItem', fileItem, response, status, headers);
+		};
+		uploader.onCompleteAll = function() {
+			console.info('onCompleteAll');
+		};
+
+		console.info('uploader', uploader);
 	});
 
 
