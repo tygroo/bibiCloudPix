@@ -37,7 +37,8 @@ import org.apache.commons.io.FilenameUtils;
 //@Controller
 //@RequestMapping("")
 public class UploadResource {
-    private final String UPLOADED_FILE_PATH = "/srv/appli/images";//"c:/temp/"; //"/srv/data/";
+    private final String UPLOADED_FILE_PATH = "/srv/appli/images";
+   // private final String UPLOADED_FILE_PATH = "c:/temp/";
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
