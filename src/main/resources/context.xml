@@ -22,8 +22,8 @@
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
 		<property name="url"
 				  value="jdbc:mysql://10.0.3.134:3306/cloudpix" />
-		<!-- <property name="url"
-				  value="jdbc:mysql://198.27.66.107:3306/cloudpix" /> -->
+		<!--<property name="url"-->
+				  <!--value="jdbc:mysql://localhost:3306/cloudpix" />-->
 		<property name="initialSize" value="5" />
 		<property name="minIdle" value="5" />
 		<property name="maxIdle" value="10" />
@@ -82,6 +82,12 @@
 	<context:component-scan base-package="fr.kisuke.rest.resources" />
 
 	<bean id="objectMapper" class="org.codehaus.jackson.map.ObjectMapper" />
+
+	<!--<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">-->
+
+		<!--<property name="maxUploadSize" value="300000"/>&lt;!&ndash; Max size in bytes. &ndash;&gt;-->
+
+	<!--</bean>-->
 
 	<!-- SPRING SECURITY SETUP -->
 
