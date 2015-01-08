@@ -151,9 +151,9 @@ public class UploadResource {
         picture.setNameLow(nameLow);
         picture.setPath(path);
 
-        String userName = userdetails.getUsername();
-        if (null != userName ) {
-            picture.setUser(userDao.findByName(userName));
+       // String userName = userdetails.getUsername();
+        if (null != userdetails ) {
+            picture.setUser(userDao.findByName(userdetails.getUsername()));
         }
 
         this.pictureDao.save(picture);
