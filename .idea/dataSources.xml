@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DataSourceManagerImpl" format="xml" hash="1252411194">
+  <component name="DataSourceManagerImpl" format="xml" hash="2908417239">
     <data-source source="LOCAL" name="cloudpix_mysql" uuid="b7eebaad-1ac5-4758-8d14-800643b90aea">
       <driver-ref>mysql</driver-ref>
       <synchronize>true</synchronize>
