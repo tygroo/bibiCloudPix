@@ -23,6 +23,11 @@ angular.module('exampleApp', ['ngRoute', 'ngCookies', 'exampleApp.services','ang
 				controller: SigninController
 			});
 
+			$routeProvider.when('/infos', {
+				templateUrl: 'partials/infos.html',
+				controller: CreateController
+			});
+
 			$routeProvider.otherwise({
 				templateUrl: 'partials/index.html',
 				controller: IndexController
@@ -180,6 +185,18 @@ function IndexController($scope, PicturesService) {
 };
 
 
+function InfosController($scope, PicturesService) {
+	console.log("test infos");
+	$scope.pictureEntries = PicturesService.query();
+
+	$scope.deleteEntry = function(pictureEntry) {
+		pictureEntry.$remove(function() {
+			$scope.pictureEntries = PicturesService.query();
+		});
+	};
+	$scope.rememberMe = false;
+};
+
 function EditController($scope, $routeParams, $location, PicturesService) {
 
 	$scope.pictureEntry = PicturesService.get({id: $routeParams.id});
@@ -198,7 +215,7 @@ function CreateController($scope, $location, PicturesService) {
 	console.log("test create ");
 	$scope.save = function() {
 		$scope.pictureEntry.$save(function() {
-			$location.path('/');
+			$location.path('/infos');
 		});
 	};
 };
@@ -250,4 +267,9 @@ services.factory('UserService', function($resource) {
 services.factory('PicturesService', function($resource) {
 
 	return $resource('rest/picture/:id', {id: '@id'});
+});
+
+services.factory('UploadService', function($resource) {
+
+	return $resource('rest/upload/file/', {id: '@id'});
 });

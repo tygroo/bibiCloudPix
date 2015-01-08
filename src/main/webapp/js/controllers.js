@@ -7,7 +7,7 @@ angular
     .module('app', ['angularFileUpload'])
 
 
-    .controller('AppController', ['$scope', 'FileUploader', function($scope, FileUploader) {
+    .controller('app', ['$scope', 'FileUploader', function($scope, FileUploader) {
         var uploader = $scope.uploader = new FileUploader({
             url: 'upload.php'
         });
