@@ -2,7 +2,11 @@ package fr.kisuke.rest.resources;
 
 
 
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
 import java.io.*;
+import javax.imageio.ImageIO;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -37,8 +41,8 @@ import org.apache.commons.io.FilenameUtils;
 //@Controller
 //@RequestMapping("")
 public class UploadResource {
-    private final String UPLOADED_FILE_PATH = "/srv/appli/images/";
-//   private final String UPLOADED_FILE_PATH = "c:/temp/";
+    //    private final String UPLOADED_FILE_PATH = "/srv/appli/images/";
+    private final String UPLOADED_FILE_PATH = "c:/temp/";
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -71,7 +75,7 @@ public class UploadResource {
 
         //constructs upload file path
         fileName = UPLOADED_FILE_PATH + fileName;
-      //  return Response.ok(uploadContent).build();
+        //  return Response.ok(uploadContent).build();
         writeFile(bytes,fileName);
 
         return Response.ok().build();
@@ -126,37 +130,65 @@ public class UploadResource {
         File file = new File(filenameNorm);
         if (!file.exists()) {
             file.createNewFile();
+            recordFileOnDisk(content, file);
         }
 
         File fileMed = new File(filenameMed);
         if (!fileMed.exists()) {
-            fileMed.createNewFile();
+            recordFileOnDisk(content, fileMed);
+
+            // echelle <0 reduction
+            // si on met une echelle >0 ca foire
+            double echelleMed=0.75;
+
+            changePictureQuality(extension, fileMed, echelleMed);
         }
 
         File fileLow = new File(filenameLow);
         if (!fileLow.exists()) {
             fileLow.createNewFile();
+            recordFileOnDisk(content, fileLow);
+
+            // echelle <0 reduction
+            // si on met une echelle >0 ca foire
+            double echelleLow=0.25;
+
+            changePictureQuality(extension, fileLow, echelleLow);
         }
 
-
-        recordFileOnDisk(content, file);
-
-        recordFileOnDisk(content, fileMed);
-
-        recordFileOnDisk(content, fileLow);
-
+        //Persistence dans le BDD
         picture.setName(FilenameUtils.getName(filename));
         picture.setNameHight(nameNorm);
         picture.setNameMed(nameMed);
         picture.setNameLow(nameLow);
         picture.setPath(path);
 
-       // String userName = userdetails.getUsername();
+        // String userName = userdetails.getUsername();
         if (null != userdetails ) {
             picture.setUser(userDao.findByName(userdetails.getUsername()));
         }
 
         this.pictureDao.save(picture);
+    }
+
+    private void changePictureQuality(String extension, File inputFile, double echelle) {
+        try{
+            BufferedImage bi= ImageIO.read(inputFile);
+            System.out.println("Traitement de : " + inputFile);
+            BufferedImage biNew = new BufferedImage((int) (bi.getWidth() * echelle),(int) (bi.getHeight() * echelle),
+                    bi.getType());
+            AffineTransform tx = new AffineTransform();
+            tx.scale(echelle, echelle);
+            AffineTransformOp op = new AffineTransformOp(tx,
+                    AffineTransformOp.TYPE_BILINEAR);
+            bi=op.filter(bi, biNew);
+            ImageIO.write(bi, extension, inputFile);
+        }
+        catch (Exception e)
+        {
+            System.out.println("ERROR -- le fichier" + inputFile + " n'est pas une image");
+        }
+        //  inputFile.createNewFile();
     }
 
     private void recordFileOnDisk(byte[] content, File file) throws IOException {
