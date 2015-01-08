@@ -38,7 +38,7 @@ import org.apache.commons.io.FilenameUtils;
 //@RequestMapping("")
 public class UploadResource {
     private final String UPLOADED_FILE_PATH = "/srv/appli/images/";
-   // private final String UPLOADED_FILE_PATH = "c:/temp/";
+//   private final String UPLOADED_FILE_PATH = "c:/temp/";
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -151,7 +151,10 @@ public class UploadResource {
         picture.setNameLow(nameLow);
         picture.setPath(path);
 
-        picture.setUser(userDao.findByName(userdetails.getUsername()));
+        String userName = userdetails.getUsername();
+        if (null != userName ) {
+            picture.setUser(userDao.findByName(userName));
+        }
 
         this.pictureDao.save(picture);
     }
