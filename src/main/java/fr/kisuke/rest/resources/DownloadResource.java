@@ -102,7 +102,6 @@ public class DownloadResource {
 
     @GET
     @Path("getUploadClient")
-    @Produces("*/jar")
     public Response getUploadClient() {
 
         String jarFile = "/srv/appli/cCloud.jar";
