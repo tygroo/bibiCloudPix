@@ -100,6 +100,24 @@ public class DownloadResource {
         return getResponse(fileName, exactName);
     }
 
+    @GET
+    @Path("getUploadClient")
+    @Produces("*/jar")
+    public Response getUploadClient() {
+
+        String jarFile = "/srv/appli/cCloud.jar";
+
+        //Construction de la requete du fichier
+        File repositoryJarFile = new File(jarFile);
+        if (repositoryJarFile != null) {
+
+            Response.ResponseBuilder response = Response.ok((Object) repositoryJarFile);
+            response.header("Content-Disposition", "attachment; filename=CloudPixClient");
+            return response.build();
+        }
+        return Response.noContent().build();
+    }
+
     private Response getResponse(String fileName, String exactName) {
         //Put some validations here such as invalid file name or missing file name
         if(fileName == null || fileName.isEmpty())
