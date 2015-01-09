@@ -106,7 +106,7 @@
 	<security:http realm="Protected API" use-expressions="true"
 				   auto-config="false" create-session="stateless" entry-point-ref="unauthorizedEntryPoint"
 				   authentication-manager-ref="authenticationManager">
-		 <security:intercept-url pattern="/**" requires-channel="https" />
+		 <!--<security:intercept-url pattern="/**" requires-channel="https" />-->
 		<security:custom-filter ref="authenticationTokenProcessingFilter"
 								position="FORM_LOGIN_FILTER" />
 		<security:intercept-url pattern="/rest/user/authenticate"
