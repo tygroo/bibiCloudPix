@@ -27,7 +27,7 @@ public class DownloadResource {
     private PictureDao pictureDao;
 
     @GET
-    @Path("getImage/{imageId}")
+    @Path("full/{imageId}")
     @Produces("image/*")
     public Response getImage(@PathParam(value = "imageId") Long imageId) {
         Pictures pictureToSend = getPictures(imageId);
@@ -69,7 +69,7 @@ public class DownloadResource {
     }
 
     @GET
-    @Path("getImageMed/{imageId}")
+    @Path("medium/{imageId}")
     @Produces("image/*")
     public Response getImageMed(@PathParam(value = "imageId") Long imageId) {
 
@@ -86,7 +86,7 @@ public class DownloadResource {
     }
 
     @GET
-    @Path("getImageLow/{imageId}")
+    @Path("low/{imageId}")
     @Produces("image/*")
     public Response getImageLow(@PathParam(value = "imageId") Long imageId) {
 

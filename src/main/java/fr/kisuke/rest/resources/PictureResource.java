@@ -65,8 +65,10 @@ public class PictureResource
 				} else if (authority.toString().equals("user")) {
 					viewWriter = this.mapper.writerWithView(JsonViews.User.class);
 					for (Pictures pict : allEntries) {
-						if (userDetails.getUsername() == pict.getUser().getUsername()) {
-							entriesToShow.add(pict);
+						if (null != pict.getUser()) {
+							if (userDetails.getUsername().toString().equals(pict.getUser().getUsername())) {
+								entriesToShow.add(pict);
+							}
 						}
 					}
 				}

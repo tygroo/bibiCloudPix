@@ -68,7 +68,10 @@ public class UploadResource {
     public String uploadFile(
             @FormDataParam("file") final InputStream uploadedInputStream,
             @FormDataParam("file") FormDataContentDisposition fileDetail,
-            @FormDataParam("fileName") String fileName) throws IOException {
+            @FormDataParam("fileName") String fileName,
+            @FormDataParam("user")String userName) throws IOException{
+
+        UserDetails userdetails = isAdmin();
 
         ObjectWriter viewWriter = null;
         if (fileName == null ){
@@ -178,7 +181,9 @@ public class UploadResource {
         picture.setNameLow(nameLow);
         picture.setPath(path);
 
-        // String userName = userdetails.getUsername();
+
+        //String userName = userdetails.getUsername();
+
         if (null != userdetails ) {
             picture.setUser(userDao.findByName(userdetails.getUsername()));
         }
