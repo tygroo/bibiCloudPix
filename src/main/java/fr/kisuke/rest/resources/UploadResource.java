@@ -11,14 +11,19 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
+
+import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataParam;
+import fr.kisuke.JsonViews;
 import fr.kisuke.dao.picture.PictureDao;
 import fr.kisuke.dao.user.UserDao;
 import fr.kisuke.entity.Pictures;
 import org.apache.commons.io.IOUtils;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.ObjectWriter;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,15 +64,19 @@ public class UploadResource {
     @POST
     @Path("/file")
     @Consumes("multipart/form-data")
-    @Produces("text/plain")
-    public Response uploadFile(
-            @FormDataParam("content") final InputStream uploadedInputStream,
+    @Produces(MediaType.APPLICATION_JSON)
+    public String uploadFile(
+            @FormDataParam("file") final InputStream uploadedInputStream,
+            @FormDataParam("file") FormDataContentDisposition fileDetail,
             @FormDataParam("fileName") String fileName) throws IOException {
 
+        ObjectWriter viewWriter = null;
+        if (fileName == null ){
+            fileName = fileDetail.getFileName();
+        }
+
         //String uploadContent=IOUtils.toString(uploadedInputStream);
-        this.logger.info("create an upload picture(): " + fileName);
-
-
+        this.logger.info("create an upload picture(): " + fileName );
 
         //convert the uploaded file to inputstream
 
@@ -76,9 +85,15 @@ public class UploadResource {
         //constructs upload file path
         fileName = UPLOADED_FILE_PATH + fileName;
         //  return Response.ok(uploadContent).build();
-        writeFile(bytes,fileName);
 
-        return Response.ok().build();
+        Pictures pict= writeFile(bytes,fileName);
+        if (null != pict){
+
+            viewWriter = this.mapper.writerWithView(JsonViews.User.class);
+            return viewWriter.writeValueAsString(pict);
+        }
+        return  viewWriter.writeValueAsString(new Pictures());
+
     }
     /**
      * header sample
@@ -105,7 +120,7 @@ public class UploadResource {
     }
 
     //save to somewhere
-    private void writeFile(byte[] content, String filename) throws IOException {
+    private Pictures writeFile(byte[] content, String filename) throws IOException {
         UserDetails userdetails = isAdmin();
         DateTime now = new DateTime();
 
@@ -168,7 +183,7 @@ public class UploadResource {
             picture.setUser(userDao.findByName(userdetails.getUsername()));
         }
 
-        this.pictureDao.save(picture);
+        return this.pictureDao.save(picture);
     }
 
     private void changePictureQuality(String extension, File inputFile, double echelle) {
