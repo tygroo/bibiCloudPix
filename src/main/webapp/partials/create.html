@@ -8,7 +8,7 @@
 	<div id="fileuploader">Upload
 		<div class="ajax-upload-dragdrop" style="vertical-align:top;">
 			<div class="ajax-file-upload" style="position: relative; overflow: hidden; cursor: default;">Upload
-				<form method="POST" action="http://198.27.66.107/cloudpix/rest/upload/file/" enctype="multipart/form-data" style="margin: 0px; padding: 0px;">
+				<form method="POST" action="https://198.27.66.107/cloudpix/rest/upload/file/" enctype="multipart/form-data" style="margin: 0px; padding: 0px;">
 					<input type="file" id="ajax-upload-id-1421096196363" name="file[]" multiple="" style="position: absolute; cursor: pointer; top: 0px; width: 120px; height: 25px; left: 0px; z-index: 100; opacity: 0;">
 				</form>
 		</div><span><b>Drag &amp; Drop Files</b></span></div>
@@ -39,7 +39,7 @@
 	$(document).ready(function()
 	{
 		$("#fileuploader").uploadFile({
-			url:"http://198.27.66.107/cloudpix/rest/upload/file/",
+			url:"https://198.27.66.107/cloudpix/rest/upload/file/",
 			allowedTypes:"png,gif,jpg,jpeg",
 			fileName:"file",
 			onSubmit:function(files)
@@ -48,7 +48,7 @@
 			},
 			onSuccess:function(files,data,xhr)
 			{
-				$("#eventsmessage").html($("#eventsmessage").html()+"<br> http://198.27.66.107/cloudpix/rest/files/getImage/"+data.id+" Texte_ou_image_à_cliquer" ) ;
+				$("#eventsmessage").html($("#eventsmessage").html()+"<br> https://198.27.66.107/cloudpix/rest/files/getImage/"+data.id+" Texte_ou_image_à_cliquer" ) ;
 
 			},
 			afterUploadAll:function()
