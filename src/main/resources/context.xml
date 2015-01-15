@@ -111,6 +111,8 @@
 								position="FORM_LOGIN_FILTER" />
 		<security:intercept-url pattern="/rest/user/authenticate"
 								access="permitAll" />
+		<security:intercept-url method="PUT" pattern="/rest/user/**"
+								access="permitAll" />
 		<security:intercept-url method="GET" pattern="/rest/news/**"
 								access="permitAll" />
 		<security:intercept-url method="PUT" pattern="/rest/news/**"
