@@ -5,7 +5,7 @@
 <div class="row">
 
 	<div class="col-md-6">
-		<form class="form-horizontal">
+		<form class="form-horizontal" method="put" action="rest/authenticationManager/" >
 			<div class="form-group">
 				<label for="username" class="col-sm-3 control-label">User Name:</label>
 				<div class="col-sm-9">
@@ -22,17 +22,34 @@
 			<div class="form-group">
 				<label for="password2" class="col-sm-3 control-label">Reenter Password:</label>
 				<div class="col-sm-9">
-					<input id="password2" ng-model="password2" type="password" class="form-control" />
+
+					<div id="divcomp"></div>
+					<input id="password2" ng-model="password2" type="password" class="form-control" onBlur="checkPass()" />
 				</div>
 			</div>
 
 			<div class="form-group">
 				<div class="col-sm-9 col-sm-offset-3">
-					<input type="submit" value="Log In" class="btn btn-primary" ng-click="login()"/>
+					<input type="submit" value="Log In" class="btn btn-primary"/>
 				</div>
 			</div>
 		</form>
 	</div>
+	<script>
+		function checkPass()
+		{
+			var champA = document.getElementById("password").value;
+			var champB = document.getElementById("password2").value;
+			var div_comp = document.getElementById("divcomp");
 
-
+			if(champA == champB)
+			{
+				divcomp.innerHTML = "Correct";
+			}
+			else
+			{
+				divcomp.innerHTML = "Erreur !";
+			}
+		}
+	</script>
 </div>

@@ -5,15 +5,15 @@
 
 <div class="form-horizontal">
 
-	<div id="fileuploader">Upload
-		<div class="ajax-upload-dragdrop" style="vertical-align:top;">
-			<div class="ajax-file-upload" style="position: relative; overflow: hidden; cursor: default;">Upload for {{user.name}}
-				<form method="POST" action="rest/upload/file/" enctype="multipart/form-data"  style="margin: 0px; padding: 0px;" >
-					<input type="file" id="ajax-upload-id-1421096196363" name="file[]" multiple="" style="position: absolute; cursor: pointer; top: 0px; width: 120px; height: 25px; left: 0px; z-index: 100; opacity: 0;">
-					<input type="hidden" id="ajax-upload-id-1421096196364" name="user" value="testDeNom">
-				</form>
-		</div><span><b>Drag &amp; Drop Files</b></span></div>
-	</div>
+
+
+	<div
+			class="btn btn-primary btn-upload"
+			upload-button
+			url="rest/upload/file/"
+			on-success="onSuccess(response)"
+			>Choisisez le fichier à envoyer ...</div>
+
 	<div id="eventsupload" style="display: none;">
 
 		Upload
@@ -41,14 +41,14 @@
 	{
 		$("#fileuploader").uploadFile({
 //			url:"https://198.27.66.107/cloudpix/rest/upload/file/",
-			url:"rest/upload/file/",
-			allowedTypes:"png,gif,jpg,jpeg",
-			fileName:"file",
+//			url:"rest/upload/file/",
+//			allowedTypes:"png,gif,jpg,jpeg",
+//			fileName:"file",
 			onSubmit:function(files)
 			{
 				$("#eventsmessage").html($("#eventsmessage").html()+"<br/>Fichier Soumis au cloud:"+JSON.stringify(files));
 			},
-			onSuccess:function(files,data,xhr)
+			onSuccess:function(data)
 			{
 				$("#eventsmessage").html($("#eventsmessage").html()+"<br/><img id='low' alt='image' width='50' height='50' src='rest/files/low/"+data.id+"'  />" ) ;
 				$("#eventsmessage").html($("#eventsmessage").html()+"<br/><a href='rest/files/full/"+data.id+"' target='_blank'> Qualité normale	</a>" ) ;

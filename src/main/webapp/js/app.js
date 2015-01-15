@@ -1,4 +1,4 @@
-var app = angular.module('exampleApp', ['ngRoute', 'ngCookies', 'exampleApp.services','angularFileUpload']);
+var app = angular.module('exampleApp', ['ngRoute', 'ngCookies', 'exampleApp.services','angularFileUpload','lr.upload']);
 	app.config(
 		[ '$routeProvider', '$locationProvider', '$httpProvider', function($routeProvider, $locationProvider, $httpProvider) {
 
@@ -164,6 +164,13 @@ function CreateController($scope, $location, PicturesService) {
 
 	$scope.pictureEntry = new PicturesService();
 	console.log("test create ");
+
+	$scope.onSuccess = function (response) {
+		console.log('AppCtrl.onSuccess', response);
+		$scope.pictureEntry = response.data;
+		$scope.uploads = $scope.uploads.concat(response.data.files);
+	};
+
 	$scope.save = function() {
 		$scope.pictureEntry.$save(function() {
 			$location.path('/infos');
@@ -205,7 +212,13 @@ services.factory('UserService', function($resource) {
 					method: 'POST',
 					params: {'action' : 'authenticate'},
 					headers : {'Content-Type': 'application/x-www-form-urlencoded'}
+				},
+				signin: {
+					method: 'PUT',
+					params: {'action' : 'signin'},
+					headers : {'Content-Type': 'application/x-www-form-urlencoded'}
 				}
+
 			}
 		);
 });

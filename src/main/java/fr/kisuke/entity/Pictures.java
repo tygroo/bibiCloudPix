@@ -43,7 +43,7 @@ public class Pictures implements Serializable, Entity {
 	@Column(name = "CREATIONDATE")
 	private DateTime creationDate;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "iduser", nullable = true)
 	private Users user;
 

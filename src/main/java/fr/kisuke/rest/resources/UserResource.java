@@ -3,14 +3,11 @@ package fr.kisuke.rest.resources;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.ws.rs.FormParam;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
+import fr.kisuke.dao.user.UserDao;
+import fr.kisuke.entity.Users;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,17 +17,22 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import fr.kisuke.rest.TokenUtils;
 import fr.kisuke.transfer.TokenTransfer;
 import fr.kisuke.transfer.UserTransfer;
+import org.springframework.util.StringUtils;
 
 
 @Component
 @Path("/user")
 public class UserResource
 {
+	private UserDao userDao;
+
+	private PasswordEncoder passwordEncoder;
 
 	@Autowired
 	private UserDetailsService userService;
@@ -98,5 +100,24 @@ public class UserResource
 
 		return roles;
 	}
+	@PUT()
+	@Produces(MediaType.APPLICATION_JSON)
+	public UserTransfer signinUser(@FormParam("username") String username,
+								   @FormParam("password") String password,
+								   @FormParam("password2") String password2) {
+		Users userUser = null;
+		if (null != password && null != password2 && null != username) {
+			if (password == password2) {
+				userUser = new Users(username, this.passwordEncoder.encode(password));
+				userUser.addRole("user");
+				this.userDao.save(userUser);
+			}
+		}
 
+		if (null != userUser) {
+			return new UserTransfer(userUser.getUsername(), this.createRoleMap(userUser));
+		}else {
+			return null;
+		}
+	}
 }

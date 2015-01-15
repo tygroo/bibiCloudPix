@@ -19,8 +19,10 @@ import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataParam;
 import fr.kisuke.JsonViews;
 import fr.kisuke.dao.picture.PictureDao;
+import fr.kisuke.dao.user.JpaUserDao;
 import fr.kisuke.dao.user.UserDao;
 import fr.kisuke.entity.Pictures;
+import fr.kisuke.entity.Users;
 import org.apache.commons.io.IOUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.ObjectWriter;
@@ -46,8 +48,8 @@ import org.apache.commons.io.FilenameUtils;
 //@Controller
 //@RequestMapping("")
 public class UploadResource {
-        private final String UPLOADED_FILE_PATH = "/srv/appli/images/";
-//    private final String UPLOADED_FILE_PATH = "c:/temp/";
+//        private final String UPLOADED_FILE_PATH = "/srv/appli/images/";
+    private final String UPLOADED_FILE_PATH = "c:/temp/";
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -68,8 +70,7 @@ public class UploadResource {
     public String uploadFile(
             @FormDataParam("file") final InputStream uploadedInputStream,
             @FormDataParam("file") FormDataContentDisposition fileDetail,
-            @FormDataParam("fileName") String fileName,
-            @FormDataParam("user")String userName) throws IOException{
+            @FormDataParam("fileName") String fileName) throws IOException{
 
         UserDetails userdetails = isAdmin();
 
@@ -185,7 +186,8 @@ public class UploadResource {
         //String userName = userdetails.getUsername();
 
         if (null != userdetails ) {
-            picture.setUser(userDao.findByName(userdetails.getUsername()));
+            Users user = userDao.findByName(userdetails.getUsername());
+            picture.setUser(user);
         }
 
         return this.pictureDao.save(picture);
