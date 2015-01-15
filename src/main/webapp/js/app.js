@@ -198,8 +198,17 @@ function LoginController($scope, $rootScope, $location, $cookieStore, UserServic
 	};
 };
 
-function SigninController(){
+function SigninController($scope, $rootScope, $location, $cookieStore, UserService){
+	$scope.rememberMe = false;
 
+	$scope.signin = function() {
+		UserService.signin($.param({username: $scope.username, password: $scope.password, password2: $scope.password2}), function() {
+			UserService.put(function(user) {
+				$rootScope.user = user;
+				$location.path("/");
+			});
+		});
+	};
 };
 
 var services = angular.module('exampleApp.services', ['ngResource']);
@@ -215,7 +224,7 @@ services.factory('UserService', function($resource) {
 				},
 				signin: {
 					method: 'PUT',
-					params: {'action' : 'signin'},
+					params: {'action' : 'new'},
 					headers : {'Content-Type': 'application/x-www-form-urlencoded'}
 				}
 

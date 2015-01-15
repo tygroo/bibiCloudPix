@@ -30,8 +30,10 @@ import org.springframework.util.StringUtils;
 @Path("/user")
 public class UserResource
 {
+	@Autowired
 	private UserDao userDao;
 
+	@Autowired
 	private PasswordEncoder passwordEncoder;
 
 	@Autowired
@@ -100,15 +102,21 @@ public class UserResource
 
 		return roles;
 	}
-	@PUT()
+
+	@Path("new")
+	@PUT
 	@Produces(MediaType.APPLICATION_JSON)
 	public UserTransfer signinUser(@FormParam("username") String username,
 								   @FormParam("password") String password,
 								   @FormParam("password2") String password2) {
 		Users userUser = null;
-		if (null != password && null != password2 && null != username) {
-			if (password == password2) {
-				userUser = new Users(username, this.passwordEncoder.encode(password));
+		if (null != password && null != password2 && null != username ) {
+			if ( password.equals(password2)) {
+
+				userUser = new Users();
+				userUser.setName(username);
+				String pass = passwordEncoder.encode(password);
+				userUser.setPassword(pass);
 				userUser.addRole("user");
 				this.userDao.save(userUser);
 			}

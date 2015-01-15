@@ -26,7 +26,7 @@ public class Users implements Entity, UserDetails {
 	private static final long serialVersionUID = 8557272960465160482L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)//, generator="users_id_seq")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)//, generator="users_id_seq")
     //@SequenceGenerator(name="users_id_seq", sequenceName="users_id_seq", allocationSize=1)
 	@Column(name = "iduser", unique = true, nullable = false)
 	private Long id;
@@ -40,7 +40,7 @@ public class Users implements Entity, UserDetails {
 	@ElementCollection(fetch = FetchType.EAGER)
 	private Set<String> roles = new HashSet<String>();
 
-	protected Users() {
+	public Users() {
 		/* Reflection instantiation */
 	}
 
