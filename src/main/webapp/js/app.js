@@ -46,11 +46,18 @@ app.config(
 							var method = config.method;
 							var url = config.url;
 
-							if (status == 401) {
+							if (status == 401 && url =="rest/user/authenticate" && method =="POST") {
+								$rootScope.error = "Login ou mot de passe incorrect";
 								$location.path( "/login" );
-							} else {
-								$rootScope.error = method + " on " + url + " failed with status " + status;
-							}
+							} else if(status == 500 && url == "rest/user/new" && method =="PUT") {
+								$rootScope.error = "Le user existe deja";
+
+							} else if(status == 401 ) {
+								$location.path( "/login" );
+
+							}else{
+									$rootScope.error = method + " on " + url + " failed with status " + status;
+								}
 
 							return $q.reject(rejection);
 						}

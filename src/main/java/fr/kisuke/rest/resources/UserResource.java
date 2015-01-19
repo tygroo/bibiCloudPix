@@ -123,6 +123,7 @@ public class UserResource
 					Users newuser = this.userDao.save(userUser);
 				} catch (ConstraintViolationException e){
 					System.out.print("probleme de création :" + e.toString());
+					return null;
 				}
 			}
 		}
