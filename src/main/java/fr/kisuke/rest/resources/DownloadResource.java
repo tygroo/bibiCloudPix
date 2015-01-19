@@ -54,7 +54,7 @@ public class DownloadResource {
                     pictureToSend = picture;
                 } else if (authority.toString().equals("user")) {
 
-                        if (userDetails.getUsername() == picture.getUser().getUsername()) {
+                        if (userDetails.getUsername().equals(picture.getUser().getName())) {
                             pictureToSend = picture;
                         }
 
