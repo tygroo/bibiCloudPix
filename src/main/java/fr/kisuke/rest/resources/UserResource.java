@@ -8,6 +8,7 @@ import javax.ws.rs.core.MediaType;
 
 import fr.kisuke.dao.user.UserDao;
 import fr.kisuke.entity.Users;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -118,7 +119,11 @@ public class UserResource
 				String pass = passwordEncoder.encode(password);
 				userUser.setPassword(pass);
 				userUser.addRole("user");
-				this.userDao.save(userUser);
+				try {
+					Users newuser = this.userDao.save(userUser);
+				} catch (ConstraintViolationException e){
+					System.out.print("probleme de création :" + e.toString());
+				}
 			}
 		}
 
