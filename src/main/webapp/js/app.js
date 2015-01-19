@@ -162,15 +162,23 @@ function EditController($scope, $routeParams, $location, PicturesService) {
 function CreateController($scope, $location, PicturesService, FileUploader ,$rootScope) {
 
 	var authToken = $rootScope.authToken;
-	var username = $rootScope.user;
+if (authToken === undefined){
+	$scope.uploader =  new FileUploader({
+		url: 'rest/upload/file/',
+		method:'POST'
+	});
 
-$scope.uploader =  new FileUploader({
-	url: 'rest/upload/file/',
-	method:'POST',
-	headers : {
-		'X-Auth-Token': authToken
-	}
-});
+}else {
+
+	$scope.uploader =  new FileUploader({
+		url: 'rest/upload/file/',
+		method:'POST',
+		headers : {
+			'X-Auth-Token': authToken
+		}
+	});
+}
+
 
 	$scope.uploader.filters.push({
 		name: 'imageFilter',
