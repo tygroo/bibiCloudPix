@@ -7,7 +7,7 @@ angular
     .module('app', ['angularFileUpload'])
 
 
-    .controller('app', ['$scope', 'FileUploader', function($scope, FileUploader) {
+    .controller('AppController', ['$scope', 'FileUploader', function($scope, FileUploader) {
         var uploader = $scope.uploader = new FileUploader({
             url: 'upload.php'
         });
@@ -15,10 +15,9 @@ angular
         // FILTERS
 
         uploader.filters.push({
-            name: 'imageFilter',
+            name: 'customFilter',
             fn: function(item /*{File|FileLikeObject}*/, options) {
-                var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
-                return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
+                return this.queue.length < 10;
             }
         });
 

@@ -1,5 +1,5 @@
-var app = angular.module('exampleApp', ['ngRoute', 'ngCookies', 'exampleApp.services','angularFileUpload','lr.upload']);
-	app.config(
+var app = angular.module('exampleApp', ['ngRoute', 'ngCookies', 'exampleApp.services','angularFileUpload','angularFileUpload']);
+app.config(
 		[ '$routeProvider', '$locationProvider', '$httpProvider', function($routeProvider, $locationProvider, $httpProvider) {
 
 
@@ -78,7 +78,7 @@ var app = angular.module('exampleApp', ['ngRoute', 'ngCookies', 'exampleApp.serv
 	    );
 		} ]
 
-	).run(function($rootScope, $location, $cookieStore, UserService, FileUploader) {
+	).run(function($rootScope, $location, $cookieStore, UserService) {
 
 		/* Reset error when a new view is loaded */
 		$rootScope.$on('$viewContentLoaded', function() {
@@ -121,7 +121,6 @@ var app = angular.module('exampleApp', ['ngRoute', 'ngCookies', 'exampleApp.serv
 	});
 
 
-
 function IndexController($scope, PicturesService) {
 	console.log("test index");
 	$scope.pictureEntries = PicturesService.query();
@@ -160,7 +159,66 @@ function EditController($scope, $routeParams, $location, PicturesService) {
 };
 
 
-function CreateController($scope, $location, PicturesService) {
+function CreateController($scope, $location, PicturesService, FileUploader ,$rootScope) {
+
+	var authToken = $rootScope.authToken;
+	var username = $rootScope.user;
+
+$scope.uploader =  new FileUploader({
+	url: 'rest/upload/file/',
+	method:'POST',
+	headers : {
+		'X-Auth-Token': authToken
+	}
+});
+
+	$scope.uploader.filters.push({
+		name: 'imageFilter',
+		fn: function(item /*{File|FileLikeObject}*/, options) {
+			var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
+			return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
+		}
+	});
+
+
+	// CALLBACKS
+
+	$scope.uploader.onWhenAddingFileFailed = function(item /*{File|FileLikeObject}*/, filter, options) {
+		console.info('onWhenAddingFileFailed', item, filter, options);
+	};
+	$scope.uploader.onAfterAddingFile = function(fileItem) {
+		console.info('onAfterAddingFile', fileItem);
+	};
+	$scope.uploader.onAfterAddingAll = function(addedFileItems) {
+		console.info('onAfterAddingAll', addedFileItems);
+	};
+	$scope.uploader.onBeforeUploadItem = function(item) {
+		console.info('onBeforeUploadItem', item);
+	};
+	$scope.uploader.onProgressItem = function(fileItem, progress) {
+		console.info('onProgressItem', fileItem, progress);
+	};
+	$scope.uploader.onProgressAll = function(progress) {
+		console.info('onProgressAll', progress);
+	};
+	$scope.uploader.onSuccessItem = function(fileItem, response, status, headers) {
+		console.info('onSuccessItem', fileItem, response, status, headers);
+	};
+	$scope.uploader.onErrorItem = function(fileItem, response, status, headers) {
+		console.info('onErrorItem', fileItem, response, status, headers);
+	};
+	$scope.uploader.onCancelItem = function(fileItem, response, status, headers) {
+		console.info('onCancelItem', fileItem, response, status, headers);
+	};
+	$scope.uploader.onCompleteItem = function(fileItem, response, status, headers) {
+		console.info('onCompleteItem', fileItem, response, status, headers);
+		$scope.response = response;
+	};
+	$scope.uploader.onCompleteAll = function() {
+		console.info('onCompleteAll');
+	};
+
+	console.info('uploader', $scope.uploader);
 
 	$scope.pictureEntry = new PicturesService();
 	console.log("test create ");
@@ -173,7 +231,7 @@ function CreateController($scope, $location, PicturesService) {
 
 	$scope.save = function() {
 		$scope.pictureEntry.$save(function() {
-			$location.path('/infos');
+			$location.path('/');
 		});
 	};
 };
@@ -202,11 +260,18 @@ function SigninController($scope, $rootScope, $location, $cookieStore, UserServi
 	$scope.rememberMe = false;
 
 	$scope.signin = function() {
-		UserService.signin($.param({username: $scope.username, password: $scope.password, password2: $scope.password2}), function() {
-			UserService.put(function(user) {
-				$rootScope.user = user;
-				$location.path("/");
-			});
+		UserService.signin($.param({username: $scope.username, password: $scope.password, password2: $scope.password2}), function(authenticationResult) {
+
+				var authToken = authenticationResult.token;
+				$rootScope.authToken = authToken;
+				if ($scope.rememberMe) {
+					$cookieStore.put('authToken', authToken);
+				}
+				UserService.get(function(user) {
+					$rootScope.user = user;
+					$location.path("/");
+				});
+
 		});
 	};
 };

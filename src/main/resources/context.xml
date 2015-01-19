@@ -20,10 +20,10 @@
 		<property name="username" value="bibi" />
 		<property name="password" value="bibi" />
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url"
-				  value="jdbc:mysql://10.0.3.134:3306/cloudpix" />
 		<!--<property name="url"-->
-				  <!--value="jdbc:mysql://localhost:3306/cloudpix" />-->
+				  <!--value="jdbc:mysql://10.0.3.134:3306/cloudpix" />-->
+		<property name="url"
+				  value="jdbc:mysql://localhost:3306/cloudpix" />
 		<property name="initialSize" value="5" />
 		<property name="minIdle" value="5" />
 		<property name="maxIdle" value="10" />

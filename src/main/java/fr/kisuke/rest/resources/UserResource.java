@@ -106,7 +106,7 @@ public class UserResource
 	@Path("new")
 	@PUT
 	@Produces(MediaType.APPLICATION_JSON)
-	public UserTransfer signinUser(@FormParam("username") String username,
+	public TokenTransfer signinUser(@FormParam("username") String username,
 								   @FormParam("password") String password,
 								   @FormParam("password2") String password2) {
 		Users userUser = null;
@@ -123,7 +123,18 @@ public class UserResource
 		}
 
 		if (null != userUser) {
-			return new UserTransfer(userUser.getUsername(), this.createRoleMap(userUser));
+			UsernamePasswordAuthenticationToken authenticationToken =
+					new UsernamePasswordAuthenticationToken(username, password);
+			Authentication authentication = this.authManager.authenticate(authenticationToken);
+			SecurityContextHolder.getContext().setAuthentication(authentication);
+
+		/*
+		 * Reload user as password of authentication principal will be null after authorization and
+		 * password is needed for token generation
+		 */
+			UserDetails userDetails = this.userService.loadUserByUsername(username);
+
+			return new TokenTransfer(TokenUtils.createToken(userDetails));
 		}else {
 			return null;
 		}
