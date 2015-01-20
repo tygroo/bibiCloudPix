@@ -130,6 +130,17 @@ public class PictureResource
 	public void delete(@PathParam("id") Long id)
 	{
 		this.logger.info("delete(id)");
+		Pictures picture = this.pictureDao.find(id);
+
+		//suppression des fichiers associers
+		File fichierNormal = new File(picture.getPath()+picture.getNameHight());
+		fichierNormal.delete();
+
+		File fichierMed = new File(picture.getPath()+picture.getNameMed());
+		fichierMed.delete();
+
+		File fichierLow = new File(picture.getPath() +picture.getNameLow());
+		fichierLow.delete();
 
 		this.pictureDao.delete(id);
 	}
