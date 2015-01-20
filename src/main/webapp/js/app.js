@@ -2,7 +2,6 @@ var app = angular.module('exampleApp', ['ngRoute', 'ngCookies', 'exampleApp.serv
 app.config(
 		[ '$routeProvider', '$locationProvider', '$httpProvider', function($routeProvider, $locationProvider, $httpProvider) {
 
-
 			$routeProvider.when('/create', {
 				templateUrl: 'partials/create.html',
 				controller: CreateController
@@ -21,11 +20,6 @@ app.config(
 			$routeProvider.when('/signin', {
 				templateUrl: 'partials/signin.html',
 				controller: SigninController
-			});
-
-			$routeProvider.when('/infos', {
-				templateUrl: 'partials/infos.html',
-				controller: InfosController
 			});
 
 			$routeProvider.otherwise({
@@ -95,15 +89,12 @@ app.config(
 		});
 
 		$rootScope.hasRole = function(role) {
-
 			if ($rootScope.user === undefined) {
 				return false;
 			}
-
 			if ($rootScope.user.roles[role] === undefined) {
 				return false;
 			}
-
 			return $rootScope.user.roles[role];
 		};
 
@@ -129,7 +120,6 @@ app.config(
 		$rootScope.initialized = true;
 	});
 
-
 function IndexController($scope, PicturesService) {
 	console.log("test index");
 	$scope.pictureEntries = PicturesService.query();
@@ -140,20 +130,6 @@ function IndexController($scope, PicturesService) {
 		});
 	};
 	$scope.rememberMe = false;
-};
-
-
-function InfosController($scope, $routeParams, $location, PicturesService) {
-	console.log("test infos");
-	$scope.pictureEntries = PicturesService.query();
-	$scope.pictureEntry = PicturesService.get({id: $routeParams.id});
-
-	$scope.get = function(pictureEntry) {
-		$scope.pictureEntry.$get(function() {
-			$scope.pictureEntries = PicturesService.query();
-			//$location.path('/');
-		});
-	};
 };
 
 function EditController($scope, $routeParams, $location, PicturesService) {
@@ -188,10 +164,6 @@ if (authToken === undefined){
 	});
 	$scope.urltoken = "?token="+authToken;
 }
-
-
-
-
 	$scope.uploader.filters.push({
 		name: 'imageFilter',
 		fn: function(item /*{File|FileLikeObject}*/, options) {
@@ -200,52 +172,26 @@ if (authToken === undefined){
 		}
 	});
 
-
 	// CALLBACKS
-
-	$scope.uploader.onWhenAddingFileFailed = function(item /*{File|FileLikeObject}*/, filter, options) {
-		console.info('onWhenAddingFileFailed', item, filter, options);
-	};
-	$scope.uploader.onAfterAddingFile = function(fileItem) {
-		console.info('onAfterAddingFile', fileItem);
-	};
-	$scope.uploader.onAfterAddingAll = function(addedFileItems) {
-		console.info('onAfterAddingAll', addedFileItems);
-	};
-	$scope.uploader.onBeforeUploadItem = function(item) {
-		console.info('onBeforeUploadItem', item);
-	};
-	$scope.uploader.onProgressItem = function(fileItem, progress) {
-		console.info('onProgressItem', fileItem, progress);
-	};
-	$scope.uploader.onProgressAll = function(progress) {
-		console.info('onProgressAll', progress);
-	};
 	$scope.uploader.onSuccessItem = function(fileItem, response, status, headers) {
-		console.info('onSuccessItem', fileItem, response, status, headers);
+		console.info('onSuccessItem', fileItem, response);
 	};
-	$scope.uploader.onErrorItem = function(fileItem, response, status, headers) {
-		console.info('onErrorItem', fileItem, response, status, headers);
-	};
-	$scope.uploader.onCancelItem = function(fileItem, response, status, headers) {
-		console.info('onCancelItem', fileItem, response, status, headers);
-	};
+
 	$scope.uploader.onCompleteItem = function(fileItem, response, status, headers) {
-		console.info('onCompleteItem', fileItem, response, status, headers);
-		$scope.response = response;
+		//console.info('onCompleteItem', fileItem, response);
+		fileItem.index = response.id;
+		console.info('onCompleteItem2', fileItem, response);
 	};
 	$scope.uploader.onCompleteAll = function() {
 		console.info('onCompleteAll');
 	};
-
-	console.info('uploader', $scope.uploader);
 
 	$scope.pictureEntry = new PicturesService();
 	console.log("test create ");
 
 	$scope.onSuccess = function (response) {
 		console.log('AppCtrl.onSuccess', response);
-		$scope.pictureEntry = response.data;
+		//$scope.pictureEntry = response.data;
 		$scope.uploads = $scope.uploads.concat(response.data.files);
 	};
 
@@ -291,7 +237,6 @@ function SigninController($scope, $rootScope, $location, $cookieStore, UserServi
 					$rootScope.user = user;
 					$location.path("/");
 				});
-
 		});
 	};
 };
@@ -312,7 +257,6 @@ services.factory('UserService', function($resource) {
 					params: {'action' : 'new'},
 					headers : {'Content-Type': 'application/x-www-form-urlencoded'}
 				}
-
 			}
 		);
 });
