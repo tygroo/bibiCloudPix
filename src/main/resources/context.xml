@@ -113,15 +113,6 @@
 								access="permitAll" />
 		<security:intercept-url method="PUT" pattern="/rest/user/**"
 								access="permitAll" />
-		<security:intercept-url method="GET" pattern="/rest/news/**"
-								access="permitAll" />
-		<security:intercept-url method="PUT" pattern="/rest/news/**"
-								access="hasRole('admin')" />
-		<security:intercept-url method="POST" pattern="/rest/news/**"
-								access="permitAll"/>
-		<security:intercept-url method="DELETE"
-								pattern="/rest/news/**" access="hasRole('admin')" />
-
 		<security:intercept-url method="GET" pattern="/rest/picture/**"
 								access="permitAll" />
 		<security:intercept-url method="PUT" pattern="/rest/picture/**"
@@ -129,7 +120,8 @@
 		<security:intercept-url method="POST" pattern="/rest/picture/**"
 								access="permitAll"/>
 		<security:intercept-url method="DELETE"
-								pattern="/rest/picture/**" access="hasRole('user')" />
+								pattern="/rest/picture/**"
+								access="hasRole('admin')or hasRole('user')" />
 	</security:http>
 
 	<bean id="unauthorizedEntryPoint" class="fr.kisuke.rest.UnauthorizedEntryPoint" />
