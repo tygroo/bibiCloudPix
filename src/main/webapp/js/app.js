@@ -120,8 +120,9 @@ app.config(
 		$rootScope.initialized = true;
 	});
 
-function IndexController($scope, PicturesService) {
+function IndexController($scope, $location , $routeParams ,PicturesService) {
 	console.log("test index");
+
 	$scope.pictureEntries = PicturesService.query();
 
 	$scope.deleteEntry = function(pictureEntry) {
@@ -223,6 +224,7 @@ function LoginController($scope, $rootScope, $location, $cookieStore, UserServic
 };
 
 function SigninController($scope, $rootScope, $location, $cookieStore, UserService){
+
 	$scope.rememberMe = false;
 
 	$scope.signin = function() {

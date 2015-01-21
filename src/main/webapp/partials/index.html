@@ -2,7 +2,7 @@
 	<a href="#!/create" class="btn btn-default" title="Create"><span class="glyphicon glyphicon-plus"></span></a>
 </div>
 <div class="page-header">
-	<h3>Images</h3>
+	<h3>Images </h3>
 </div>
 
 <div ng-repeat="pictureEntry in pictureEntries"  ng-show="hasRole('user')||hasRole('admin')">
@@ -15,12 +15,12 @@
 	</div>
 	<h4>{{pictureEntry.name}}</h4>
 	<p>
-		<img id="low" alt="image" width="100" height="100" src="/rest/files/low/{{pictureEntry.id}}?token={{authToken.valueOf()}}"  />
-		<a href="/rest/files/full/{{pictureEntry.id}}?token={{authToken.valueOf()}}" target="_blank"> Qualité normale
+		<img id="low" alt="image" width="100" height="100" src="rest/files/low/{{pictureEntry.id}}?token={{authToken.valueOf()}}"  />
+		<a href="rest/files/full/{{pictureEntry.id}}?token={{authToken.valueOf()}}" target="_blank"> Qualité normale
 		</a>
-		<a href="/rest/files/medium/{{pictureEntry.id}}?token={{authToken.valueOf()}}" target="_blank"> Qualité moyenne
+		<a href="rest/files/medium/{{pictureEntry.id}}?token={{authToken.valueOf()}}" target="_blank"> Qualité moyenne
 		</a>
-		<a href="/rest/files/low/{{pictureEntry.id}}?token={{authToken.valueOf()}}" target="_blank"> Qualité faible
+		<a href="rest/files/low/{{pictureEntry.id}}?token={{authToken.valueOf()}}" target="_blank"> Qualité faible
 		</a>
 	</p>
 	<hr />
