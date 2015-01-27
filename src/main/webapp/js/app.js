@@ -164,7 +164,10 @@ if (authToken === undefined){
 		}
 	});
 	$scope.urltoken = "?token="+authToken;
+
 }
+
+
 	$scope.uploader.filters.push({
 		name: 'imageFilter',
 		fn: function(item /*{File|FileLikeObject}*/, options) {
@@ -178,9 +181,14 @@ if (authToken === undefined){
 		console.info('onSuccessItem', fileItem, response);
 	};
 
-	$scope.uploader.onCompleteItem = function(fileItem, response, status, headers) {
+	$scope.uploader.onCompleteItem = function(fileItem, response, $location, headers) {
 		//console.info('onCompleteItem', fileItem, response);
 		fileItem.index = response.id;
+
+		makeShortFull();
+		makeShortMedium();
+		makeShortLow();
+		
 		console.info('onCompleteItem2', fileItem, response);
 	};
 	$scope.uploader.onCompleteAll = function() {
@@ -200,6 +208,24 @@ if (authToken === undefined){
 		$scope.pictureEntry.$save(function() {
 			$location.path('/');
 		});
+	};
+
+	$scope.create = function(item, $location) {
+
+		// Make HTTP request to goo.gl URL shortener
+		var googleAPIKey = 'AIzaSyBZxqzzA98ToBe1N8LxkdZUhkZcUC1AsSY';
+		var googleShortenerUrl =
+			'https://www.googleapis.com/urlshortener/v1/url/?key='
+			+ googleAPIKey;
+		$http.post(googleShortenerUrl,
+			{longUrl: $location.protocol()+'://'+$location.host()+':'+$location.port()+'/rest/files/full/'+item.id})
+			.success(function (resp){
+
+				//url.shortUrl = resp.id;
+				console.info('shortURL',resp, resp.id);
+				// Do something with the shortURL...
+
+			});
 	};
 };
 
@@ -242,6 +268,113 @@ function SigninController($scope, $rootScope, $location, $cookieStore, UserServi
 		});
 	};
 };
+function makeShortFull()
+{
+	var longUrl=document.getElementById("longurlfull").value;
+	var token=document.getElementById("tokenfull").value;
+	var request = gapi.client.urlshortener.url.insert({
+		'resource': {
+			'longUrl': 'https://openstack.gheberg.eu/cloudpix/rest/files/full/'+longUrl+token
+		}
+	});
+	request.execute(function(response)
+	{
+
+		if(response.id != null)
+		{
+			str ="<b>Short URL:</b> <a href='"+response.id+"'>"+response.id+"</a><br>";
+			document.getElementById("outputfull"+longUrl).innerHTML = str;
+		}
+		else
+		{
+			alert("error: creating short url n"+ response.error);
+		}
+
+	});
+}
+
+function makeShortMedium()
+{
+	var longUrl=document.getElementById("longurlmedium").value;
+	var token=document.getElementById("tokenmedium").value;
+	var request = gapi.client.urlshortener.url.insert({
+		'resource': {
+			'longUrl': 'https://openstack.gheberg.eu/cloudpix/rest/files/medium/'+longUrl+token
+		}
+	});
+	request.execute(function(response)
+	{
+
+		if(response.id != null)
+		{
+			str ="<b>Short URL:</b> <a href='"+response.id+"'>"+response.id+"</a><br>";
+			document.getElementById("outputmedium"+longUrl).innerHTML = str;
+		}
+		else
+		{
+			alert("error: creating short url n"+ response.error);
+		}
+
+	});
+}
+
+function makeShortLow()
+{
+	var longUrl=document.getElementById("longurllow").value;
+	var token=document.getElementById("tokenlow").value;
+	var request = gapi.client.urlshortener.url.insert({
+		'resource': {
+			'longUrl': 'https://openstack.gheberg.eu/cloudpix/rest/files/low/'+longUrl+token
+		}
+	});
+	request.execute(function(response)
+	{
+
+		if(response.id != null)
+		{
+			str ="<b>Short URL:</b> <a href='"+response.id+"'>"+response.id+"</a><br>";
+			document.getElementById("outputlow"+longUrl).innerHTML = str;
+		}
+		else
+		{
+			alert("error: creating short url n"+ response.error);
+		}
+
+	});
+}
+function getShortInfo()
+{
+	var shortUrl=document.getElementById("shorturl").value;
+
+	var request = gapi.client.urlshortener.url.get({
+		'shortUrl': shortUrl,
+		'projection':'FULL'
+	});
+	request.execute(function(response)
+	{
+
+		if(response.longUrl!= null)
+		{
+			str ="<b>Long URL:</b>"+response.longUrl+"<br>";
+			str +="<b>Create On:</b>"+response.created+"<br>";
+			str +="<b>Short URL Clicks:</b>"+response.analytics.allTime.shortUrlClicks+"<br>";
+			str +="<b>Long URL Clicks:</b>"+response.analytics.allTime.longUrlClicks+"<br>";
+
+			document.getElementById("output").innerHTML = str;
+		}
+		else
+		{
+			alert("error: "+response.error);
+		}
+
+	});
+
+}
+function load() {
+	//gapi.client.setApiKey(api_key);
+	gapi.client.load('urlshortener', 'v1',function(){document.getElementById("output").innerHTML="";});
+}
+
 
 var services = angular.module('exampleApp.services', ['ngResource']);
 
@@ -271,4 +404,30 @@ services.factory('UserService', function($resource) {
 services.factory('PicturesService', function($resource) {
 
 	return $resource('rest/picture/:id', {id: '@id'});
+});
+
+services.factory('UrlShortener',function($q, $rootScope){
+
+
+});
+
+app.directive('myDirectiveWithRestriction', function () {
+	return {
+		restrict: 'EA',
+		scope: {
+			tasks: '='
+		},
+		controller: function ($scope){
+			$scope.uploader.onCompleteItem = function(fileItem, response) {
+				//console.info('onCompleteItem', fileItem, response);
+				fileItem.index = response.id;
+
+				makeShortFull();
+				makeShortMedium();
+				makeShortLow();
+
+				console.info('onCompleteItem2', fileItem, response);
+			};
+		}
+	};
 });

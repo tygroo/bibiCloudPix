@@ -52,6 +52,7 @@
 				</tr>
 				</thead>
 				<tbody>
+				<myDirectiveWithRestriction>
 				<tr ng-repeat="item in uploader.queue" >
 					<td>
 						<strong>{{ item.file.name }}</strong>
@@ -63,11 +64,31 @@
 						<!--fixed width and height -->
 						<div ng-thumb="{ file: item.file, width: 100, height: 100 }"></div>
 						<div ng-show="item.isSuccess" >
-							<a href="rest/files/full/{{item.index}}{{urltoken}}"> Full </a> <br>
-							<a href="rest/files/medium/{{item.index}}{{urltoken}}"> Medium </a> <br>
-							<a href="rest/files/low/{{item.index}}{{urltoken}}"> Low </a> <br>
-						</div>
 
+							<a href="rest/files/full/{{item.index}}{{urltoken}}"> Full </a>
+							<input type="hidden"  id="longurlfull" name="url" value="{{item.index}}">
+							<input type="hidden"  id="tokenfull" name="url" value="{{urltoken}}">
+
+							<!--<input type="button" value="Créer URL courte" onblur="makeShortFull();" /> <br/>-->
+							<div id="outputfull{{item.index}}" ></div><br/><br/>
+
+
+							<a href="rest/files/medium/{{item.index}}{{urltoken}}"> Medium </a>
+							<input type="hidden"  id="longurlmedium" name="url" value="{{item.index}}">
+							<input type="hidden"  id="tokenmedium" name="url" value="{{urltoken}}">
+
+							<!--<input type="button" value="Créer URL courte" onblur="makeShortMedium();" /> <br/>-->
+							<div id="outputmedium{{item.index}}"></div><br/><br/>
+
+
+							<a href="rest/files/low/{{item.index}}{{urltoken}}"> Low </a>
+							<input type="hidden"  id="longurllow" name="url" value="{{item.index}}">
+							<input type="hidden"  id="tokenlow" name="url" value="{{urltoken}}">
+
+							<!--<input type="button" value="Créer URL courte" onshow="makeShortLow();" /> <br/>-->
+							<div id="outputlow{{item.index}}"></div><br/><br/>
+						</div>
+						<hr/>
 					</td>
 					<td ng-show="uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
 					<td ng-show="uploader.isHTML5">
@@ -92,6 +113,7 @@
 						</button>
 					</td>
 				</tr>
+				</myDirectiveWithRestriction>
 				</tbody>
 			</table>
 
@@ -119,6 +141,115 @@
 
 
 </div>
+<!--<script>-->
+	<!--//var api_key = 'YOUR-API-KEY-HERE';-->
+
+	<!--function makeShortFull()-->
+	<!--{-->
+		<!--var longUrl=document.getElementById("longurlfull").value;-->
+		<!--var token=document.getElementById("tokenfull").value;-->
+		<!--var request = gapi.client.urlshortener.url.insert({-->
+			<!--'resource': {-->
+				<!--'longUrl': 'https://openstack.gheberg.eu/cloudpix/rest/files/full/'+longUrl+token-->
+			<!--}-->
+		<!--});-->
+		<!--request.execute(function(response)-->
+		<!--{-->
+
+			<!--if(response.id != null)-->
+			<!--{-->
+				<!--str ="<b>Short URL:</b> <a href='"+response.id+"'>"+response.id+"</a><br>";-->
+				<!--document.getElementById("outputfull"+longUrl).innerHTML = str;-->
+			<!--}-->
+			<!--else-->
+			<!--{-->
+				<!--alert("error: creating short url n"+ response.error);-->
+			<!--}-->
+
+		<!--});-->
+	<!--}-->
+	<!--function makeShortMedium()-->
+	<!--{-->
+		<!--var longUrl=document.getElementById("longurlmedium").value;-->
+		<!--var token=document.getElementById("tokenmedium").value;-->
+		<!--var request = gapi.client.urlshortener.url.insert({-->
+			<!--'resource': {-->
+				<!--'longUrl': 'https://openstack.gheberg.eu/cloudpix/rest/files/medium/'+longUrl+token-->
+			<!--}-->
+		<!--});-->
+		<!--request.execute(function(response)-->
+		<!--{-->
+
+			<!--if(response.id != null)-->
+			<!--{-->
+				<!--str ="<b>Short URL:</b> <a href='"+response.id+"'>"+response.id+"</a><br>";-->
+				<!--document.getElementById("outputmedium"+longUrl).innerHTML = str;-->
+			<!--}-->
+			<!--else-->
+			<!--{-->
+				<!--alert("error: creating short url n"+ response.error);-->
+			<!--}-->
+
+		<!--});-->
+	<!--}-->
+	<!--function makeShortLow()-->
+	<!--{-->
+		<!--var longUrl=document.getElementById("longurllow").value;-->
+		<!--var token=document.getElementById("tokenlow").value;-->
+		<!--var request = gapi.client.urlshortener.url.insert({-->
+			<!--'resource': {-->
+				<!--'longUrl': 'https://openstack.gheberg.eu/cloudpix/rest/files/low/'+longUrl+token-->
+			<!--}-->
+		<!--});-->
+		<!--request.execute(function(response)-->
+		<!--{-->
+
+			<!--if(response.id != null)-->
+			<!--{-->
+				<!--str ="<b>Short URL:</b> <a href='"+response.id+"'>"+response.id+"</a><br>";-->
+				<!--document.getElementById("outputlow"+longUrl).innerHTML = str;-->
+			<!--}-->
+			<!--else-->
+			<!--{-->
+				<!--alert("error: creating short url n"+ response.error);-->
+			<!--}-->
+
+		<!--});-->
+	<!--}-->
+	<!--function getShortInfo()-->
+	<!--{-->
+		<!--var shortUrl=document.getElementById("shorturl").value;-->
+
+		<!--var request = gapi.client.urlshortener.url.get({-->
+			<!--'shortUrl': shortUrl,-->
+			<!--'projection':'FULL'-->
+		<!--});-->
+		<!--request.execute(function(response)-->
+		<!--{-->
+
+			<!--if(response.longUrl!= null)-->
+			<!--{-->
+				<!--str ="<b>Long URL:</b>"+response.longUrl+"<br>";-->
+				<!--str +="<b>Create On:</b>"+response.created+"<br>";-->
+				<!--str +="<b>Short URL Clicks:</b>"+response.analytics.allTime.shortUrlClicks+"<br>";-->
+				<!--str +="<b>Long URL Clicks:</b>"+response.analytics.allTime.longUrlClicks+"<br>";-->
+
+				<!--document.getElementById("output").innerHTML = str;-->
+			<!--}-->
+			<!--else-->
+			<!--{-->
+				<!--alert("error: "+response.error);-->
+			<!--}-->
+
+		<!--});-->
+
+	<!--}-->
+	<!--function load() {-->
+		<!--//gapi.client.setApiKey(api_key);-->
+		<!--gapi.client.load('urlshortener', 'v1',function(){document.getElementById("output").innerHTML="";});-->
+	<!--}-->
+<!--</script>-->
+<script src="https://apis.google.com/js/client.js?onload=load"></script>
 	<!--<div class="form-group">-->
 		<!--<div class="col-sm-10 col-sm-offset-2">-->
 			<!--<button type="submit" class="btn btn-primary" ng-click="save()"><span class="glyphicon glyphicon-ok"></span> Save</button>-->
