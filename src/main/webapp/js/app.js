@@ -168,6 +168,7 @@ if (authToken === undefined){
 }
 
 
+
 	$scope.uploader.filters.push({
 		name: 'imageFilter',
 		fn: function(item /*{File|FileLikeObject}*/, options) {
@@ -184,11 +185,15 @@ if (authToken === undefined){
 	$scope.uploader.onCompleteItem = function(fileItem, response, $location, headers) {
 		//console.info('onCompleteItem', fileItem, response);
 		fileItem.index = response.id;
+		//var pictureItem;
+		fileItem.shortNameHight = response.shortNameHight;
+		fileItem.shortNameMed = response.shortNameMed;
+		fileItem.shortNameLow = response.shortNameLow;
 
-		makeShortFull();
-		makeShortMedium();
-		makeShortLow();
-		
+		//makeShortFull();
+		//makeShortMedium();
+		//makeShortLow();
+
 		console.info('onCompleteItem2', fileItem, response);
 	};
 	$scope.uploader.onCompleteAll = function() {
@@ -268,112 +273,112 @@ function SigninController($scope, $rootScope, $location, $cookieStore, UserServi
 		});
 	};
 };
-function makeShortFull()
-{
-	var longUrl=document.getElementById("longurlfull").value;
-	var token=document.getElementById("tokenfull").value;
-	var request = gapi.client.urlshortener.url.insert({
-		'resource': {
-			'longUrl': 'https://openstack.gheberg.eu/cloudpix/rest/files/full/'+longUrl+token
-		}
-	});
-	request.execute(function(response)
-	{
-
-		if(response.id != null)
-		{
-			str ="<b>Short URL:</b> <a href='"+response.id+"'>"+response.id+"</a><br>";
-			document.getElementById("outputfull"+longUrl).innerHTML = str;
-		}
-		else
-		{
-			alert("error: creating short url n"+ response.error);
-		}
-
-	});
-}
-
-function makeShortMedium()
-{
-	var longUrl=document.getElementById("longurlmedium").value;
-	var token=document.getElementById("tokenmedium").value;
-	var request = gapi.client.urlshortener.url.insert({
-		'resource': {
-			'longUrl': 'https://openstack.gheberg.eu/cloudpix/rest/files/medium/'+longUrl+token
-		}
-	});
-	request.execute(function(response)
-	{
-
-		if(response.id != null)
-		{
-			str ="<b>Short URL:</b> <a href='"+response.id+"'>"+response.id+"</a><br>";
-			document.getElementById("outputmedium"+longUrl).innerHTML = str;
-		}
-		else
-		{
-			alert("error: creating short url n"+ response.error);
-		}
-
-	});
-}
-
-function makeShortLow()
-{
-	var longUrl=document.getElementById("longurllow").value;
-	var token=document.getElementById("tokenlow").value;
-	var request = gapi.client.urlshortener.url.insert({
-		'resource': {
-			'longUrl': 'https://openstack.gheberg.eu/cloudpix/rest/files/low/'+longUrl+token
-		}
-	});
-	request.execute(function(response)
-	{
-
-		if(response.id != null)
-		{
-			str ="<b>Short URL:</b> <a href='"+response.id+"'>"+response.id+"</a><br>";
-			document.getElementById("outputlow"+longUrl).innerHTML = str;
-		}
-		else
-		{
-			alert("error: creating short url n"+ response.error);
-		}
-
-	});
-}
-function getShortInfo()
-{
-	var shortUrl=document.getElementById("shorturl").value;
-
-	var request = gapi.client.urlshortener.url.get({
-		'shortUrl': shortUrl,
-		'projection':'FULL'
-	});
-	request.execute(function(response)
-	{
-
-		if(response.longUrl!= null)
-		{
-			str ="<b>Long URL:</b>"+response.longUrl+"<br>";
-			str +="<b>Create On:</b>"+response.created+"<br>";
-			str +="<b>Short URL Clicks:</b>"+response.analytics.allTime.shortUrlClicks+"<br>";
-			str +="<b>Long URL Clicks:</b>"+response.analytics.allTime.longUrlClicks+"<br>";
-
-			document.getElementById("output").innerHTML = str;
-		}
-		else
-		{
-			alert("error: "+response.error);
-		}
-
-	});
-
-}
-function load() {
-	//gapi.client.setApiKey(api_key);
-	gapi.client.load('urlshortener', 'v1',function(){document.getElementById("output").innerHTML="";});
-}
+//function makeShortFull()
+//{
+//	var longUrl=document.getElementById("longurlfull").value;
+//	var token=document.getElementById("tokenfull").value;
+//	var request = gapi.client.urlshortener.url.insert({
+//		'resource': {
+//			'longUrl': 'https://openstack.gheberg.eu/cloudpix/rest/files/full/'+longUrl+token
+//		}
+//	});
+//	request.execute(function(response)
+//	{
+//
+//		if(response.id != null)
+//		{
+//			str ="<b>Short URL:</b> <a href='"+response.id+"'>"+response.id+"</a><br>";
+//			document.getElementById("outputfull"+longUrl).innerHTML = str;
+//		}
+//		else
+//		{
+//			alert("error: creating short url n"+ response.error);
+//		}
+//
+//	});
+//}
+//
+//function makeShortMedium()
+//{
+//	var longUrl=document.getElementById("longurlmedium").value;
+//	var token=document.getElementById("tokenmedium").value;
+//	var request = gapi.client.urlshortener.url.insert({
+//		'resource': {
+//			'longUrl': 'https://openstack.gheberg.eu/cloudpix/rest/files/medium/'+longUrl+token
+//		}
+//	});
+//	request.execute(function(response)
+//	{
+//
+//		if(response.id != null)
+//		{
+//			str ="<b>Short URL:</b> <a href='"+response.id+"'>"+response.id+"</a><br>";
+//			document.getElementById("outputmedium"+longUrl).innerHTML = str;
+//		}
+//		else
+//		{
+//			alert("error: creating short url n"+ response.error);
+//		}
+//
+//	});
+//}
+//
+//function makeShortLow()
+//{
+//	var longUrl=document.getElementById("longurllow").value;
+//	var token=document.getElementById("tokenlow").value;
+//	var request = gapi.client.urlshortener.url.insert({
+//		'resource': {
+//			'longUrl': 'https://openstack.gheberg.eu/cloudpix/rest/files/low/'+longUrl+token
+//		}
+//	});
+//	request.execute(function(response)
+//	{
+//
+//		if(response.id != null)
+//		{
+//			str ="<b>Short URL:</b> <a href='"+response.id+"'>"+response.id+"</a><br>";
+//			document.getElementById("outputlow"+longUrl).innerHTML = str;
+//		}
+//		else
+//		{
+//			alert("error: creating short url n"+ response.error);
+//		}
+//
+//	});
+//}
+//function getShortInfo()
+//{
+//	var shortUrl=document.getElementById("shorturl").value;
+//
+//	var request = gapi.client.urlshortener.url.get({
+//		'shortUrl': shortUrl,
+//		'projection':'FULL'
+//	});
+//	request.execute(function(response)
+//	{
+//
+//		if(response.longUrl!= null)
+//		{
+//			str ="<b>Long URL:</b>"+response.longUrl+"<br>";
+//			str +="<b>Create On:</b>"+response.created+"<br>";
+//			str +="<b>Short URL Clicks:</b>"+response.analytics.allTime.shortUrlClicks+"<br>";
+//			str +="<b>Long URL Clicks:</b>"+response.analytics.allTime.longUrlClicks+"<br>";
+//
+//			document.getElementById("output").innerHTML = str;
+//		}
+//		else
+//		{
+//			alert("error: "+response.error);
+//		}
+//
+//	});
+//
+//}
+//function load() {
+//	//gapi.client.setApiKey(api_key);
+//	gapi.client.load('urlshortener', 'v1',function(){document.getElementById("output").innerHTML="";});
+//}
 
 
 var services = angular.module('exampleApp.services', ['ngResource']);
@@ -411,23 +416,15 @@ services.factory('UrlShortener',function($q, $rootScope){
 
 });
 
-app.directive('myDirectiveWithRestriction', function () {
-	return {
-		restrict: 'EA',
-		scope: {
-			tasks: '='
-		},
-		controller: function ($scope){
-			$scope.uploader.onCompleteItem = function(fileItem, response) {
-				//console.info('onCompleteItem', fileItem, response);
-				fileItem.index = response.id;
 
-				makeShortFull();
-				makeShortMedium();
-				makeShortLow();
-
-				console.info('onCompleteItem2', fileItem, response);
-			};
-		}
-	};
-});
+//app.directive("noscope", function ($http) {
+//	return {
+//		restrict: 'E',
+//		transclude: true,
+//		templateUrl: 'directive.html',
+//		controller: function ($scope) {
+//			$scope.as = ['1'];
+//			$scope.scoped = "(parent scope " + $scope.$id + ")";
+//		}
+//	};
+//});

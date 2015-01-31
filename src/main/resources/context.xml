@@ -105,7 +105,7 @@
 
 	<security:http realm="Protected API" use-expressions="true"
 				   auto-config="false" create-session="stateless" entry-point-ref="unauthorizedEntryPoint"
-				   authentication-manager-ref="authenticationManager">
+				   authentication-manager-ref="authenticationManager" >
 		 <!--<security:intercept-url pattern="/**" requires-channel="https" />-->
 		<security:custom-filter ref="authenticationTokenProcessingFilter"
 								position="FORM_LOGIN_FILTER" />
@@ -122,6 +122,8 @@
 		<security:intercept-url method="DELETE"
 								pattern="/rest/picture/**"
 								access="hasRole('admin')or hasRole('user')" />
+		<security:intercept-url method="GET" pattern="/rest/short/**"
+								access="permitAll" />
 	</security:http>
 
 	<bean id="unauthorizedEntryPoint" class="fr.kisuke.rest.UnauthorizedEntryPoint" />

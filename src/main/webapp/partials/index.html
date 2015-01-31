@@ -14,14 +14,26 @@
 		<a href="#!/edit/{{pictureEntry.id}}" class="btn btn-xs btn-default" ng-show="hasRole('admin')" title="edit"><span class="glyphicon glyphicon-pencil"></span></a>
 	</div>
 	<h4>{{pictureEntry.name}}</h4>
+
 	<p>
-		<img id="low" alt="image" width="100" height="100" src="rest/files/low/{{pictureEntry.id}}?token={{authToken.valueOf()}}"  />
-		<a href="rest/files/full/{{pictureEntry.id}}?token={{authToken.valueOf()}}" target="_blank"> Qualité normale
-		</a>
-		<a href="rest/files/medium/{{pictureEntry.id}}?token={{authToken.valueOf()}}" target="_blank"> Qualité moyenne
-		</a>
-		<a href="rest/files/low/{{pictureEntry.id}}?token={{authToken.valueOf()}}" target="_blank"> Qualité faible
-		</a>
+		<img id="low" alt="image" width="100" height="100"
+			 src="rest/files/low/{{pictureEntry.id}}?token={{authToken.valueOf()}}"/>
+	<hr/>
+		<strong> Qualité normale : </strong>
+		<a href="rest/files/full/{{pictureEntry.id}}?token={{authToken.valueOf()}}" target="_blank"> URL Normale </a>
+		<strong> ||| </strong>
+		<a href="rest/short/{{pictureEntry.shortNameHight}}" target="_blank"> URL réduite </a>
+	<hr/>
+		<strong> Qualité moyenne : </strong>
+		<a href="rest/files/medium/{{pictureEntry.id}}?token={{authToken.valueOf()}}" target="_blank"> URL Normale </a>
+		<strong> ||| </strong>
+		<a href="rest/short/{{pictureEntry.shortNameMed}}" target="_blank"> URL réduite </a>
+	<hr/>
+		<strong> Qualité faible : </strong>
+		<a href="rest/files/low/{{pictureEntry.id}}?token={{authToken.valueOf()}}" target="_blank"> URL Normale </a>
+		<strong> ||| </strong>
+		<a href="rest/short/{{pictureEntry.shortNameLow}}" target="_blank"> URL réduite </a>
+
 	</p>
 	<hr />
 </div>

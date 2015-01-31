@@ -24,6 +24,7 @@ import fr.kisuke.dao.user.UserDao;
 import fr.kisuke.entity.Pictures;
 import fr.kisuke.entity.Users;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.ObjectWriter;
 import org.joda.time.DateTime;
@@ -178,8 +179,11 @@ public class UploadResource {
         //Persistence dans le BDD
         picture.setName(FilenameUtils.getName(filename));
         picture.setNameHight(nameNorm);
+        picture.setShortNameHight(RandomStringUtils.randomAlphanumeric(6));
         picture.setNameMed(nameMed);
+        picture.setShortNameMed(RandomStringUtils.randomAlphanumeric(6));
         picture.setNameLow(nameLow);
+        picture.setShortNameLow(RandomStringUtils.randomAlphanumeric(6));
         picture.setPath(path);
 
 

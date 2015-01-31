@@ -32,12 +32,29 @@ public class Pictures implements Serializable, Entity {
 	@Column(name = "NAMEHIGHT")
 	private String nameHight;
 
+	@Column(name = "SHORTNAMEHIGHT")
+	private String shortNameHight;
+
+	@Column(name = "ISSHAREHIGHT")
+	private Boolean isHightShare;
 
 	@Column(name = "NAMEMEDIUM")
 	private String nameMed;
 
+	@Column(name = "SHORTNAMEMEDIUM")
+	private String shortNameMed;
+
+	@Column(name = "ISSHAREMEDIUM")
+	private Boolean isMediumShare;
+
 	@Column(name = "NAMELOW")
 	private String nameLow;
+
+	@Column(name = "SHORTNAMELOW")
+	private String shortNameLow;
+
+	@Column(name = "ISSHARELOW")
+	private Boolean isLowShare;
 
 	// @Temporal(TemporalType.DATE)
 	@Column(name = "CREATIONDATE")
@@ -107,5 +124,53 @@ public class Pictures implements Serializable, Entity {
 	}
 	public void setNameHight(final String nameHight) {
 		this.nameHight = nameHight;
+	}
+
+	public String getShortNameHight() {
+		return shortNameHight;
+	}
+
+	public void setShortNameHight(String shortNameHight) {
+		this.shortNameHight = shortNameHight;
+	}
+
+	public String getShortNameMed() {
+		return shortNameMed;
+	}
+
+	public void setShortNameMed(String shortNameMed) {
+		this.shortNameMed = shortNameMed;
+	}
+
+	public String getShortNameLow() {
+		return shortNameLow;
+	}
+
+	public void setShortNameLow(String shortNameLow) {
+		this.shortNameLow = shortNameLow;
+	}
+
+	public Boolean getIsHightShare() {
+		return isHightShare;
+	}
+
+	public void setIsHightShare(Boolean isHightShare) {
+		this.isHightShare = isHightShare;
+	}
+
+	public Boolean getIsMediumShare() {
+		return isMediumShare;
+	}
+
+	public void setIsMediumShare(Boolean isMediumShare) {
+		this.isMediumShare = isMediumShare;
+	}
+
+	public Boolean getIsLowShare() {
+		return isLowShare;
+	}
+
+	public void setIsLowShare(Boolean isLowShare) {
+		this.isLowShare = isLowShare;
 	}
 }
