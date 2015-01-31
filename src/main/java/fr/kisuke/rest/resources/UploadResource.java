@@ -179,10 +179,16 @@ public class UploadResource {
         //Persistence dans le BDD
         picture.setName(FilenameUtils.getName(filename));
         picture.setNameHight(nameNorm);
+        picture.setIsHightShare(true);
+
         picture.setShortNameHight(RandomStringUtils.randomAlphanumeric(6));
         picture.setNameMed(nameMed);
+        picture.setIsMediumShare(true);
+
         picture.setShortNameMed(RandomStringUtils.randomAlphanumeric(6));
         picture.setNameLow(nameLow);
+        picture.setIsLowShare(true);
+
         picture.setShortNameLow(RandomStringUtils.randomAlphanumeric(6));
         picture.setPath(path);
 
@@ -192,6 +198,11 @@ public class UploadResource {
         if (null != userdetails ) {
             Users user = userDao.findByName(userdetails.getUsername());
             picture.setUser(user);
+
+//            picture.setIsHightShare(false);
+//            picture.setIsMediumShare(false);
+//            picture.setIsLowShare(false);
+
         }
 
         return this.pictureDao.save(picture);

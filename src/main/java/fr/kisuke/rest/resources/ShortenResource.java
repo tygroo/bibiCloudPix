@@ -47,10 +47,13 @@ public class ShortenResource {
         List<Pictures> lstPict = new ArrayList<Pictures>();
 
         for(Pictures pict: pictures){
-            if (StringUtils.containsOnly(shortenId,pict.getShortNameHight())||
-                    StringUtils.containsOnly(shortenId,pict.getShortNameMed())||
-                    StringUtils.containsOnly(shortenId,pict.getShortNameLow())
-            ){
+            if (StringUtils.containsOnly(shortenId,pict.getShortNameHight()) && pict.getIsHightShare()){
+                lstPict.add(pict);
+            }
+            if (StringUtils.containsOnly(shortenId,pict.getShortNameMed()) && pict.getIsMediumShare()){
+                lstPict.add(pict);
+            }
+            if (StringUtils.containsOnly(shortenId,pict.getShortNameLow()) && pict.getIsLowShare()){
                 lstPict.add(pict);
             }
         }
