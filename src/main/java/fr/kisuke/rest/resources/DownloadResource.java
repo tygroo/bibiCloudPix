@@ -104,7 +104,7 @@ public class DownloadResource {
     @Path("getUploadClient")
     public Response getUploadClient() {
 
-        String jarFile = "/srv/appli/cCloud.jar";
+        String jarFile = "/srv/appli/cCloud.zip";
 
         //Construction de la requete du fichier
         File repositoryJarFile = new File(jarFile);
