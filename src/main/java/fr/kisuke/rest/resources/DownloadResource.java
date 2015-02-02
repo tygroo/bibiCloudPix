@@ -102,6 +102,7 @@ public class DownloadResource {
 
     @GET
     @Path("getUploadClient")
+    @Produces("application/zip")
     public Response getUploadClient() {
 
         String jarFile = "/srv/appli/cCloud.zip";
@@ -111,7 +112,7 @@ public class DownloadResource {
         if (repositoryJarFile != null) {
 
             Response.ResponseBuilder response = Response.ok((Object) repositoryJarFile);
-            response.header("Content-Disposition", "attachment; filename=CloudPixClient");
+            response.header("Content-Disposition", "attachment; filename=CloudPixClient.zip");
             return response.build();
         }
         return Response.noContent().build();
