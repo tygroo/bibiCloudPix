@@ -11,7 +11,7 @@
 		<a href="" ng-click="deleteEntry(pictureEntry)" class="btn btn-xs btn-default"  title="delete" ng-show="hasRole('user')||hasRole('admin')"><span class="glyphicon glyphicon-trash"></span></a>
 
 		<!--<a href="#!/edit/{{pictureEntry.id}}" class="btn btn-xs btn-default" ng-show="hasRole('user')" title="edit"><span class="glyphicon glyphicon-pencil"></span></a>-->
-		<a href="#!/edit/{{pictureEntry.id}}" class="btn btn-xs btn-default" ng-show="hasRole('admin')" title="edit"><span class="glyphicon glyphicon-pencil"></span></a>
+		<a href="#!/edit/{{pictureEntry.id}}" class="btn btn-xs btn-default" ng-show="hasRole('user')||hasRole('admin')" title="edit"><span class="glyphicon glyphicon-pencil"></span></a>
 	</div>
 	<h4>{{pictureEntry.name}}</h4>
 
