@@ -124,6 +124,8 @@
 								access="hasRole('admin')or hasRole('user')" />
 		<security:intercept-url method="GET" pattern="/rest/short/**"
 								access="permitAll" />
+		<security:intercept-url method="GET" pattern="/rest/files/**"
+								access="permitAll" />
 	</security:http>
 
 	<bean id="unauthorizedEntryPoint" class="fr.kisuke.rest.UnauthorizedEntryPoint" />
