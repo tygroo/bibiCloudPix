@@ -84,7 +84,7 @@
         </element>
       </element>
       <element id="directory" name="META-INF">
-        <element id="file-copy" path="C:\Users\Bonheur\IdeaProjects\bibiCloudPix\target/MANIFEST.MF" />
+        <element id="file-copy" path="D:\Users\Bonheur.mekmek\IdeaProjects\bibiCloudPix\target/MANIFEST.MF" />
       </element>
       <element id="javaee-facet-resources" facet="angular-rest-springsecurity/web/Web" />
     </root>
